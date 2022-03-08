@@ -2,7 +2,7 @@
 
 ## Links
 
-- [consul.io site](https://www.consul.io)
+- [`consul.io` site](https://www.consul.io)
 - docs
   - [download / install](https://www.consul.io/downloads)
   - [general usage](https://www.consul.io/docs)
