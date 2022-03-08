@@ -10,8 +10,8 @@
   - [HTTP API](https://www.consul.io/api-docs)
   - [tutorials](https://learn.hashicorp.com/consul)
 - githubs
-  - [hashicorp org](https://www.github.com/hashicorp)
-  - [hashicorp/consul repo](https://www.github.com/hashicorp/consul)
+  - [`hashicorp` org](https://www.github.com/hashicorp)
+  - [`hashicorp/consul` repo](https://www.github.com/hashicorp/consul)
 
 ```shell
 # query hashicorp repos with 'consul' in name
