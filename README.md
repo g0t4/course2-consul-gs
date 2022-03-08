@@ -13,6 +13,15 @@
   - [hashicorp org](https://www.github.com/hashicorp)
   - [hashicorp/consul repo](https://www.github.com/hashicorp/consul)
 
+```shell
+# query hashicorp repos with 'consul' in name
+gh repo list --no-archived --limit 1000 \
+ --json 'name,description' \
+ --jq '.[] | select(.name | contains("consul"))' \
+ hashicorp \
+ | jq
+```
+
 ## 1st Edition - Notes
 
 - In 2016, I published two courses about Consul:
