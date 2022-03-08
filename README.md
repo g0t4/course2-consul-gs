@@ -3,10 +3,11 @@
 ## Links
 
 - [consul.io site](https://www.consul.io)
-- documentation
-  - [general usage docs](https://www.consul.io/docs)
-  - [`consul` command docs](https://www.consul.io/commands)
-  - [HTTP API docs](https://www.consul.io/api-docs)
+- docs
+  - [download / install](https://www.consul.io/downloads)
+  - [general usage](https://www.consul.io/docs)
+  - [`consul` command](https://www.consul.io/commands)
+  - [HTTP API](https://www.consul.io/api-docs)
   - [tutorials](https://learn.hashicorp.com/consul)
 - githubs
   - [hashicorp org](https://www.github.com/hashicorp)
