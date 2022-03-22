@@ -2,5 +2,9 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/impish64"
+  
+  config.vm.hostname = "install"
+  
+  config.vm.box = "ubuntu/impish64" # ubuntu 21.10
+
 end
