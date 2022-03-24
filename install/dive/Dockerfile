@@ -17,4 +17,7 @@ RUN apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(ls
   && apt-get update \
   && apt-get install -y consul \
   \
-  && rm -rf /var/lib/apt/lists/* 
+  && rm -rf /var/lib/apt/lists/*
+
+# isolate layer with changes from installing tab completion (modifies shell startup files - bashrc)
+RUN consul -autocomplete-install
