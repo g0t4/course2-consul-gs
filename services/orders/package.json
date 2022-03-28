@@ -5,5 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/hapi": "^20.2.1"
+  }
 }
