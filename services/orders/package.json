@@ -1,6 +1,7 @@
 {
   "private": true,
-  "main": "index.js",
+  "name": "orders",
+  "main": "server.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
