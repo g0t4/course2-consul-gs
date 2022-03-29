@@ -1,3 +1,5 @@
+import process from "process";
+
 function handleSignals(server) {
   process.on("SIGTERM", async () => {
     // `kill PID` or `pkill node`
@@ -10,3 +12,5 @@ function handleSignals(server) {
 }
 
 export { handleSignals };
+
+// FYI https://nodejs.org/dist/latest-v17.x/docs/api/process.html#signal-events
