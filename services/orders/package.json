@@ -4,7 +4,7 @@
   "main": "server.mjs",
   "scripts": {
     "start": "node server.mjs",
-    "start-verbose": "LOG_LEVEL=debug node server.mjs"
+    "start-verbose": "LOG_LEVEL=verbose node server.mjs"
   },
   "license": "MIT",
   "dependencies": {

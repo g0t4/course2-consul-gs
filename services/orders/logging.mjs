@@ -1,8 +1,8 @@
 import { config } from "./config.mjs";
 
-function debug(message) {
-  if (config.LOG_LEVEL !== "debug") return;
-  console.log("[DEBUG] " + message);
+function verbose(message) {
+  if (!config.VERBOSE_LOGGING) return;
+  console.log("[VERBOSE] " + message);
 }
 
 function info(message) {
@@ -12,19 +12,19 @@ function info(message) {
 function setupLogging(server) {
   server.events.on("request", (request) => {
     // https://hapi.dev/api#-request-event
-    debug(`request: ${JSON.stringify(request)}`);
+    verbose(`request: ${JSON.stringify(request)}`);
   });
 
   server.events.on("response", (request) => {
     // https://hapi.dev/api#-response-event
     // https://hapi.dev/api#request
-    console.log(`response sent: ${request.path}`);
+    verbose(`response sent: ${request.path}`);
   });
 
   server.events.on("route", (route) => {
     // https://hapi.dev/api#-route-event
     // route info: https://hapi.dev/api#request.route
-    debug(`route setup: '${route.path}' - ${route.settings.description}`);
+    verbose(`route setup: '${route.path}' - ${route.settings.description}`);
   });
 
   server.events.on("start", () => {
@@ -43,4 +43,4 @@ function setupLogging(server) {
   });
 }
 
-export { info, debug, setupLogging };
+export { info, verbose, setupLogging };

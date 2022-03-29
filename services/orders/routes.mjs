@@ -1,9 +1,9 @@
 import { config } from "./config.mjs";
-import { info, debug } from "./logging.mjs";
+import { info, verbose } from "./logging.mjs";
 
 function throwIfFailureMode() {
   if (!config.failureMode) return;
-  debug("request made during failure mode, throwing error...");
+  verbose("request made during failure mode, throwing error...");
   throw new Error("simulated failure");
 }
 

@@ -2,7 +2,7 @@ import Hapi, { server } from "@hapi/hapi";
 import { abortOnUnhandledRejection } from "./errors.mjs";
 import { addRoutes } from "./routes.mjs";
 import { config } from "./config.mjs";
-import { setupLogging, debug } from "./logging.mjs";
+import { setupLogging } from "./logging.mjs";
 import { handleSignals } from "./signals.mjs";
 
 const runService = async () => {
