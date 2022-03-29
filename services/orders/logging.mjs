@@ -10,11 +10,6 @@ function info(message) {
 }
 
 function setupLogging(server) {
-  server.events.on("request", (request) => {
-    // https://hapi.dev/api#-request-event
-    verbose(`request: ${JSON.stringify(request)}`);
-  });
-
   server.events.on("response", (request) => {
     // https://hapi.dev/api#-response-event
     // https://hapi.dev/api#request
