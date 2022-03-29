@@ -1,4 +1,4 @@
-import Hapi, { server } from "@hapi/hapi";
+import Hapi from "@hapi/hapi";
 import { abortOnUnhandledRejection } from "./errors.mjs";
 import { addRoutes } from "./routes.mjs";
 import { config } from "./config.mjs";
