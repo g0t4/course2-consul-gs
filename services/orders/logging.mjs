@@ -15,6 +15,12 @@ function setupLogging(server) {
     debug(`request: ${JSON.stringify(request)}`);
   });
 
+  server.events.on("response", (request) => {
+    // https://hapi.dev/api#-response-event
+    // https://hapi.dev/api#request
+    console.log(`response sent: ${request.path}`);
+  });
+
   server.events.on("route", (route) => {
     // https://hapi.dev/api#-route-event
     // route info: https://hapi.dev/api#request.route
