@@ -11,13 +11,14 @@ function info(message) {
 
 function setupLogging(server) {
   server.events.on("request", (request) => {
-    // https://hapi.dev/api#-route-event
+    // https://hapi.dev/api#-request-event
     debug(`request: ${JSON.stringify(request)}`);
   });
 
   server.events.on("route", (route) => {
     // https://hapi.dev/api#-route-event
-    debug(`route setup: ${route.path}`);
+    // route info: https://hapi.dev/api#request.route
+    debug(`route setup: '${route.path}' - ${route.settings.description}`);
   });
 
   server.events.on("start", () => {

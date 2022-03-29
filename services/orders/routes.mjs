@@ -3,7 +3,7 @@ import { info, debug } from "./logging.mjs";
 
 function throwIfFailureMode() {
   if (!config.failureMode) return;
-  debug("request made during failure mode, throwing error...")
+  debug("request made during failure mode, throwing error...");
   throw new Error("simulated failure");
 }
 
@@ -11,9 +11,10 @@ function addRoutes(server) {
   server.route({
     method: "GET",
     path: "/orders/submit",
+    options: { description: "sends email notification" },
     handler: () => {
       throwIfFailureMode();
-
+      // TODO send email notification
       return "Order submitted";
     },
   });
@@ -21,9 +22,10 @@ function addRoutes(server) {
   server.route({
     method: "GET",
     path: "/orders/report/{id}",
+    options: { description: "calls shipments service" },
     handler: (request) => {
       throwIfFailureMode();
-
+      // TODO call out to shipments service for list of shipments
       return `
       Order Report
       Order ID: ${request.params.id}
@@ -34,7 +36,8 @@ function addRoutes(server) {
 
   server.route({
     method: "GET",
-    path: "/simulate/healthy",
+    path: "/simulate/normal",
+    options: { description: "disables Failure Mode" },
     handler: () => {
       config.failureMode = false;
       info("Failure mode disabled");
@@ -44,6 +47,7 @@ function addRoutes(server) {
   server.route({
     method: "GET",
     path: "/simulate/failure",
+    options: { description: "enables Failure Mode" },
     handler: () => {
       config.failureMode = true;
       info("Failure mode enabled");
