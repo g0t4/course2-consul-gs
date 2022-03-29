@@ -10,6 +10,16 @@ function info(message) {
 }
 
 function setupLogging(server) {
+  server.events.on("request", (request) => {
+    // https://hapi.dev/api#-route-event
+    debug(`request: ${JSON.stringify(request)}`);
+  });
+
+  server.events.on("route", (route) => {
+    // https://hapi.dev/api#-route-event
+    debug(`route setup: ${route.path}`);
+  });
+
   server.events.on("start", () => {
     // https://hapi.dev/api#-start-event
     info("orders service started, listening at " + server.info.uri);
@@ -17,17 +27,12 @@ function setupLogging(server) {
 
   server.events.on("closing", () => {
     // https://hapi.dev/api#-closing-event
-    debug("server stopping, no longer accepting new requests...");
+    info("server stopping, no longer accepting new requests...");
   });
 
   server.events.on("stop", () => {
     // https://hapi.dev/api#-stop-event
-    debug("server stopped");
-  });
-
-  server.events.on("route", (route) => {
-    // https://hapi.dev/api#-route-event
-    debug(`route setup: ${route.path}`);
+    info("server stopped");
   });
 }
 
