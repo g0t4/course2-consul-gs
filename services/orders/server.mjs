@@ -3,6 +3,7 @@ import { abortOnUnhandledRejection } from "./errors.mjs";
 import { addRoutes } from "./routes.mjs";
 import { config } from "./config.mjs";
 import { setupLogging, debug } from "./logging.mjs";
+import { handleSignals } from "./signals.mjs";
 
 const runService = async () => {
   const options = {
@@ -13,6 +14,7 @@ const runService = async () => {
 
   setupLogging(server); // must be prior to registering routes to log them
   addRoutes(server);
+  handleSignals(server);
 
   await server.start();
 };
