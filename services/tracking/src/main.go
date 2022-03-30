@@ -8,35 +8,32 @@ import (
 var failureMode = false
 
 // wrapper to add logging (think middleware)
-func logThen(wrappedHandler func(w http.ResponseWriter, r *http.Request)) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		_log(r)
-		wrappedHandler(w, r)
+func logThen(wrappedHandler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(response http.ResponseWriter, request *http.Request) {
+		info(request.URL.Path + " called...")
+		wrappedHandler(response, request)
 	}
 }
 
-func failThen(wrappedHandler func(w http.ResponseWriter, r *http.Request)) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
+func failThen(wrappedHandler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(response http.ResponseWriter, request *http.Request) {
 		if failureMode {
-			writeFail(w)
+			response.WriteHeader(http.StatusInternalServerError)
+			response.Write([]byte("simulated failure, Failure Mode is enabled"))
 			return
 		}
-		wrappedHandler(w, r)
+		// allow request if Failure Mode is disabled
+		wrappedHandler(response, request)
 	}
 }
 
-// response helpers
-func writeFail(response http.ResponseWriter) {
-	response.WriteHeader(http.StatusInternalServerError)
-	response.Write([]byte("simulated failure, Failure Mode is enabled"))
-}
 func write(response http.ResponseWriter, data string) {
 	response.Write([]byte(data))
 }
 
 // logging helpers
 func _log(request *http.Request) {
-	info(request.URL.Path + " called...")
+
 }
 func info(message string) {
 	log.Println("[INFO] " + message)
