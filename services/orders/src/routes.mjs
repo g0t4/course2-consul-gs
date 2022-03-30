@@ -1,5 +1,6 @@
 import { config } from "./config.mjs";
 import { info, verbose } from "./logging.mjs";
+import { shipmentsClient } from "./shipments.mjs";
 
 function throwIfFailureMode() {
   if (!config.failureMode) return;
@@ -25,11 +26,12 @@ function addRoutes(server) {
     options: { description: "calls shipments service" },
     handler: (request) => {
       throwIfFailureMode();
-      // TODO call out to shipments service for list of shipments
+      var orderId = request.params.id;
+      var shipments = shipmentsClient.getShipmentsForOrder(orderId);
       return `
-      Order Report
-      Order ID: ${request.params.id}
-      
+      Order Report <br/>
+      Order ID: ${orderId} <br/><br/>
+      Shipments: ${JSON.stringify(shipments)} <br/>
       `;
     },
   });
