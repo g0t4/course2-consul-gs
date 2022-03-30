@@ -8,21 +8,20 @@ import (
 var failureMode = false
 
 // wrapper to add logging (think middleware)
-func logThen(handler func(w http.ResponseWriter, r *http.Request)) func(http.ResponseWriter, *http.Request) {
+func logThen(wrappedHandler func(w http.ResponseWriter, r *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		_log(r)
-		handler(w, r)
+		wrappedHandler(w, r)
 	}
 }
 
-func failThen(handler func(w http.ResponseWriter, r *http.Request)) func(http.ResponseWriter, *http.Request) {
+func failThen(wrappedHandler func(w http.ResponseWriter, r *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if failureMode {
 			writeFail(w)
 			return
 		}
-		// only call handler (continuation) if not in failure mode
-		handler(w, r)
+		wrappedHandler(w, r)
 	}
 }
 
