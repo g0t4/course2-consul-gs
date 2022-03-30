@@ -38,22 +38,24 @@ function addRoutes(server) {
 
   server.route({
     method: "GET",
-    path: "/simulate/normal",
-    options: { description: "disables Failure Mode" },
+    path: "/simulate/resume",
+    options: { description: "disable Failure Mode" },
     handler: () => {
       config.failureMode = false;
-      info("Failure mode disabled");
-      return "Failure Mode disabled";
+      const message = "Failure Mode disabled";
+      info(message);
+      return message;
     },
   });
   server.route({
     method: "GET",
     path: "/simulate/failure",
-    options: { description: "enables Failure Mode" },
+    options: { description: "enable Failure Mode" },
     handler: () => {
       config.failureMode = true;
-      info("Failure mode enabled");
-      return "Failure Mode enabled, all subsequent requests will fail.";
+      const message = "Failure Mode enabled";
+      info(message);
+      return message;
     },
   });
 }
