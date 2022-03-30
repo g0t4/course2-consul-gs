@@ -1,1 +1,1 @@
-go run src/server.go
+go run ./src/main.go

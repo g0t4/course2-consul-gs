@@ -7,6 +7,14 @@ import (
 
 var failureMode = false
 
+// wrapper to add logging (think middleware)
+func logThen(handler func(w http.ResponseWriter, r *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		_log(r)
+		handler(w, r)
+	}
+}
+
 // response helpers
 func writeFail(response http.ResponseWriter) {
 	response.WriteHeader(http.StatusInternalServerError)
@@ -26,8 +34,6 @@ func info(message string) {
 
 // returns package tracking info (for a list of tracking numbers)
 func getTracking(response http.ResponseWriter, request *http.Request) {
-	_log(request)
-
 	if failureMode {
 		writeFail(response)
 		return
@@ -42,8 +48,6 @@ func getTracking(response http.ResponseWriter, request *http.Request) {
 
 // handlers toggle Failure Mode
 func simulateFailure(response http.ResponseWriter, request *http.Request) {
-	_log(request)
-
 	failureMode = true
 
 	message := "Failure Mode enabled"
@@ -51,8 +55,6 @@ func simulateFailure(response http.ResponseWriter, request *http.Request) {
 	write(response, message)
 }
 func simulateResume(response http.ResponseWriter, request *http.Request) {
-	_log(request)
-
 	failureMode = false
 
 	message := "Failure Mode disabled"
@@ -62,8 +64,6 @@ func simulateResume(response http.ResponseWriter, request *http.Request) {
 
 // catch all handler - shows a list of registered routes
 func defaultHandler(response http.ResponseWriter, request *http.Request) {
-	_log(request)
-
 	if failureMode {
 		writeFail(response)
 		return
@@ -83,10 +83,10 @@ func main() {
 
 	mux := http.NewServeMux() // https://pkg.go.dev/net/http#NewServeMux & https://pkg.go.dev/net/http#ServeMux
 	server := &http.Server{Addr: "0.0.0.0:8080", Handler: mux}
-	mux.HandleFunc("/tracking/", getTracking)
-	mux.HandleFunc("/simulate/failure/", simulateFailure)
-	mux.HandleFunc("/simulate/resume/", simulateResume)
-	mux.HandleFunc("/", defaultHandler)
+	mux.HandleFunc("/tracking/", logThen(getTracking))
+	mux.HandleFunc("/simulate/failure/", logThen(simulateFailure))
+	mux.HandleFunc("/simulate/resume/", logThen(simulateResume))
+	mux.HandleFunc("/", logThen(defaultHandler))
 	info("tracking service @ " + server.Addr)
 	server.ListenAndServe()
 
