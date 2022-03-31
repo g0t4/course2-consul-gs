@@ -31,15 +31,16 @@ app.MapGet("/shipments", () =>
     .Select(s => new { s.Id, s.Address, s.Items, s.Tracking })
     .ToList();
 
-  var trackingNumbers = Shipment.Shipments.Select(s => s.Tracking).ToList();
-  // TODO if(config.EnableTrackingLookup) {
-  // TODO trackingClient.GetTracking(results.Select(r => r.Tracking))
-  foreach (var r in results)
+  if (Config.Toggles.IncludeTrackingInfo)
   {
+    var trackingNumbers = Shipment.Shipments.Select(s => s.Tracking).ToList();
+    // TODO trackingClient.GetTracking(results.Select(r => r.Tracking))
+    foreach (var r in results)
+    {
+
+    }
 
   }
-
-  // TODO }
 
 
   return results;
