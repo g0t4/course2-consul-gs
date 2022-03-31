@@ -1,3 +1,5 @@
+using System.Net;
+
 var appBuilder = WebApplication.CreateBuilder(args);
 
 appBuilder.WebHost.ConfigureKestrel((context, serverOptions) =>
@@ -19,10 +21,32 @@ Config.ValidateAndLoad(app.Configuration);
 //   await next();
 // });
 
+app.MapGet("/simulate/failure", () =>
+{
+  Config.Toggles.IsFailureMode = true;
+  return "Failure Mode enabled";
+});
+app.MapGet("/simulate/resume", () =>
+{
+  Config.Toggles.IsFailureMode = false;
+  return "Failure Mode disabled";
+});
+
+// Failure Mode middleware - if failure mode then returns 500 internal server error - else calls next middleware
+app.Use(async (context, next) =>
+{
+  if (Config.Toggles.IsFailureMode)
+  {
+    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+    await context.Response.WriteAsync("Failure Mode enabled");
+    return;
+  }
+
+  await next(context);
+});
+
 app.MapGet("/shipments", async () =>
 {
-  ThrowIfFailureMode();
-
   if (!Config.Toggles.IncludeTrackingInfo)
   {
     // return shipments with tracking numbers
@@ -42,38 +66,18 @@ app.MapGet("/shipments", async () =>
 
 });
 
-app.MapGet("/", () =>
+app.MapGet("/", async (context) =>
 {
-  ThrowIfFailureMode();
-
-  return @"
+  await context.Response.WriteAsync(@"
 routes:
 
 /shipments - get shipment data
 /simulate/failure - enable Failure Mode
 /simulate/resume - disable Failure Mode
-  ";
+  ");
 
 });
 
-void ThrowIfFailureMode()
-{
-  if (Config.Toggles.IsFailureMode)
-  {
-    throw new System.Exception("simulated failure");
-  }
-}
-
-app.MapGet("/simulate/failure", () =>
-{
-  Config.Toggles.IsFailureMode = true;
-  return "Failure Mode enabled";
-});
-app.MapGet("/simulate/resume", () =>
-{
-  Config.Toggles.IsFailureMode = false;
-  return "Failure Mode disabled";
-});
 
 app.Run();
 
