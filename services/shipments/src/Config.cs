@@ -12,15 +12,14 @@ public static class Config
 
   public static void ValidateAndLoad(IConfiguration config)
   {
-    
+
     var shipments = config.GetSection("shipments");
-    var baseUri = shipments["TrackingServiceBaseUri"];
-    TrackingServiceBaseUri = new Uri(baseUri ?? "");
+    TrackingServiceBaseUri = new Uri(shipments["TrackingServiceBaseUri"] ?? "");
     Console.WriteLine(new { TrackingServiceBaseUri });
 
     var toggles = shipments.GetSection("Toggles");
-    bool.TryParse(toggles["InitialFailureMode"], out Toggles.IsFailureMode);
-    bool.TryParse(toggles["IncludeTrackingInfo"], out Toggles.IncludeTrackingInfo);
+    Toggles.IsFailureMode = toggles.GetValue<bool>("InitialFailureMode");
+    Toggles.IsFailureMode = toggles.GetValue<bool>("IncludeTrackingInfo");
     Console.WriteLine(new { Toggles.IsFailureMode, Toggles.IncludeTrackingInfo });
 
   }
