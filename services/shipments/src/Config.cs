@@ -19,7 +19,7 @@ public static class Config
 
     var toggles = shipments.GetSection("Toggles");
     Toggles.IsFailureMode = toggles.GetValue<bool>("InitialFailureMode");
-    Toggles.IsFailureMode = toggles.GetValue<bool>("IncludeTrackingInfo");
+    Toggles.IncludeTrackingInfo = toggles.GetValue<bool>("IncludeTrackingInfo");
     Console.WriteLine("CONFIG " + new { Toggles.IsFailureMode, Toggles.IncludeTrackingInfo });
 
   }
