@@ -15,12 +15,12 @@ public static class Config
 
     var shipments = config.GetSection("shipments");
     TrackingServiceBaseUri = new Uri(shipments["TrackingServiceBaseUri"] ?? "");
-    Console.WriteLine(new { TrackingServiceBaseUri });
+    Console.WriteLine("CONFIG " + new { TrackingServiceBaseUri });
 
     var toggles = shipments.GetSection("Toggles");
     Toggles.IsFailureMode = toggles.GetValue<bool>("InitialFailureMode");
     Toggles.IsFailureMode = toggles.GetValue<bool>("IncludeTrackingInfo");
-    Console.WriteLine(new { Toggles.IsFailureMode, Toggles.IncludeTrackingInfo });
+    Console.WriteLine("CONFIG " + new { Toggles.IsFailureMode, Toggles.IncludeTrackingInfo });
 
   }
 }
