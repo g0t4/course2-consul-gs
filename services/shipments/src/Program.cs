@@ -19,31 +19,30 @@ Config.ValidateAndLoad(app.Configuration);
 //   await next();
 // });
 
-app.MapGet("/shipments", () =>
+app.MapGet("/shipments", async () =>
 {
   if (Config.Toggles.IsFailureMode)
   {
     throw new System.Exception("simulated failure");
   }
-  // todo feature toggle for querying tracking service to add tracking to shipment data
-  var results = Shipment.Shipments
-    // note: projection are 'copies' that can be modified (ie replace Tracking number with status) without modifying static list of Shipments
-    .Select(s => new { s.Id, s.Address, s.Items, s.Tracking })
-    .ToList();
 
-  if (Config.Toggles.IncludeTrackingInfo)
+  if (!Config.Toggles.IncludeTrackingInfo)
   {
-    var trackingNumbers = Shipment.Shipments.Select(s => s.Tracking).ToList();
-    // TODO trackingClient.GetTracking(results.Select(r => r.Tracking))
-    foreach (var r in results)
-    {
-
-    }
-
+    // return shipments with tracking numbers
+    return Shipment.Shipments
+      .Select(s => new { s.Id, s.Address, s.Items, s.Tracking });
   }
 
+  // return shipments with tracking info
+  var trackingNumbers = Shipment.Shipments.Select(s => s.Tracking);
+  var trackingByNumber = await TrackingClient.GetTrackingAsync(trackingNumbers);
+  return Shipment.Shipments
+    .Select(s =>
+    {
+      var info = trackingByNumber.GetValueOrDefault(s.Tracking);
+      return new { s.Id, s.Address, s.Items, Tracking = $"{s.Tracking} + {info}" };
+    });
 
-  return results;
 });
 
 app.MapGet("/simulate/failure", () =>
