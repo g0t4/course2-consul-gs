@@ -66,18 +66,13 @@ app.MapGet("/shipments", async () =>
 
 });
 
-app.MapGet("/", async (context) =>
-{
-  await context.Response.WriteAsync(@"
+app.MapGet("/", () => @"
 routes:
 
 /shipments - get shipment data
 /simulate/failure - enable Failure Mode
 /simulate/resume - disable Failure Mode
-  ");
-
-});
-
+");
 
 app.Run();
 
