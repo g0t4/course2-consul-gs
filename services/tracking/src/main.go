@@ -48,9 +48,11 @@ func getTracking(response http.ResponseWriter, request *http.Request) {
 		write(response, "error: tracking number(s) not provided")
 		return
 	}
+	write(response, "{\n")
 	for _, num := range numbers {
-		write(response, num+" arrives in X days\n")
+		write(response, "'"+num+"': 'arrives in X days'\n")
 	}
+	write(response, "}\n")
 }
 
 // handlers toggle Failure Mode
@@ -73,7 +75,7 @@ func simulateResume(response http.ResponseWriter, request *http.Request) {
 func defaultHandler(response http.ResponseWriter, request *http.Request) {
 	var routeList = `routes:
 
-/tracking?num=X&num=Y - get tracking info, accepts 1+ tracking numbers ('num')
+/tracking?num=X&num=Y - get tracking info, expects + tracking numbers ('num')
 /simulate/failure - enable Failure Mode
 /simulate/resume - disable Failure Mode
 `
