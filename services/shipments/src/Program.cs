@@ -7,7 +7,10 @@ appBuilder.WebHost.ConfigureKestrel((context, serverOptions) =>
   serverOptions.Listen(System.Net.IPAddress.Any, 5000);
 });
 
+
 var app = appBuilder.Build();
+
+Config.ValidateAndLoad(app.Configuration);
 
 // TODO - decide if I want any custom headers added - or add another means of observability (i.e. tracing)
 // app.Use(async (context, next) =>
@@ -25,7 +28,23 @@ app.MapGet("/shipments", () =>
     throw new System.Exception("simulated failure");
   }
   // todo feature toggle for querying tracking service to add tracking to shipment data
-  return Shipment.Shipments;
+  var results = Shipment.Shipments
+    // note: projection are 'copies' that can be modified (ie replace Tracking number with status) without modifying static list of Shipments
+    .Select(s => new { s.Id, s.Address, s.Items, s.Tracking })
+    .ToList();
+
+  var trackingNumbers = Shipment.Shipments.Select(s => s.Tracking).ToList();
+  // TODO if(config.EnableTrackingLookup) {
+  // TODO trackingClient.GetTracking(results.Select(r => r.Tracking))
+  foreach (var r in results)
+  {
+
+  }
+
+  // TODO }
+
+
+  return results;
 });
 
 app.MapGet("/simulate/failure", () =>
