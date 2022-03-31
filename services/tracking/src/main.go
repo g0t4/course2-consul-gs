@@ -39,7 +39,7 @@ func info(message string) {
 	log.Println("[INFO] " + message)
 }
 
-// returns package tracking info (for a list of tracking numbers)
+// returns package tracking info (for 1+ tracking numbers)
 func getTracking(response http.ResponseWriter, request *http.Request) {
 	numbers := request.URL.Query()["num"]
 	if len(numbers) == 0 {
@@ -73,7 +73,7 @@ func simulateResume(response http.ResponseWriter, request *http.Request) {
 func defaultHandler(response http.ResponseWriter, request *http.Request) {
 	var routeList = `routes:
 
-/tracking/ - get tracking info (i.e. for tracking numbers)
+/tracking?num=X&num=Y - get tracking info, accepts 1+ tracking numbers ('num')
 /simulate/failure - enable Failure Mode
 /simulate/resume - disable Failure Mode
 `
