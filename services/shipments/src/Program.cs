@@ -19,11 +19,9 @@ Config.ValidateAndLoad(app.Configuration);
 //   await next();
 // });
 
-bool _simulate_failure = false;
-
 app.MapGet("/shipments", () =>
 {
-  if (_simulate_failure)
+  if (Config.Toggles.IsFailureMode)
   {
     throw new System.Exception("simulated failure");
   }
@@ -49,12 +47,12 @@ app.MapGet("/shipments", () =>
 
 app.MapGet("/simulate/failure", () =>
 {
-  _simulate_failure = true;
+  Config.Toggles.IsFailureMode = true;
   return "Failure Mode enabled";
 });
 app.MapGet("/simulate/resume", () =>
 {
-  _simulate_failure = false;
+  Config.Toggles.IsFailureMode = false;
   return "Failure Mode disabled";
 });
 
