@@ -24,6 +24,7 @@ app.MapGet("/shipments", () =>
   {
     throw new System.Exception("simulated failure");
   }
+  // todo feature toggle for querying tracking service to add tracking to shipment data
   return Shipment.Shipments;
 });
 
