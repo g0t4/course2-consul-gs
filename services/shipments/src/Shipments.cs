@@ -7,7 +7,6 @@ class Shipment
   public string Items { get; set; }
   public string Tracking { get; set; }
 
-
   private static string[] _Items = new[]{
     "5 Bags of Marshmallows",
     "Used Car",

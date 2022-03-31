@@ -30,7 +30,7 @@ app.MapGet("/shipments", () =>
 app.MapGet("/simulate/failure", () =>
 {
   _simulate_failure = true;
-  return "Failure Mode enabled, subsequent requests will fail.";
+  return "Failure Mode enabled";
 });
 app.MapGet("/simulate/resume", () =>
 {
