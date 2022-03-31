@@ -21,10 +21,7 @@ Config.ValidateAndLoad(app.Configuration);
 
 app.MapGet("/shipments", async () =>
 {
-  if (Config.Toggles.IsFailureMode)
-  {
-    throw new System.Exception("simulated failure");
-  }
+  ThrowIfFailureMode();
 
   if (!Config.Toggles.IncludeTrackingInfo)
   {
@@ -44,6 +41,28 @@ app.MapGet("/shipments", async () =>
     });
 
 });
+
+app.MapGet("/", () =>
+{
+  ThrowIfFailureMode();
+
+  return @"
+routes:
+
+/shipments - get shipment data
+/simulate/failure - enable Failure Mode
+/simulate/resume - disable Failure Mode
+  ";
+
+});
+
+void ThrowIfFailureMode()
+{
+  if (Config.Toggles.IsFailureMode)
+  {
+    throw new System.Exception("simulated failure");
+  }
+}
 
 app.MapGet("/simulate/failure", () =>
 {
