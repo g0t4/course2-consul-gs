@@ -41,11 +41,16 @@ func info(message string) {
 
 // returns package tracking info (for a list of tracking numbers)
 func getTracking(response http.ResponseWriter, request *http.Request) {
-	tracking := `1Z9350175039 arrives in 4 days
-1Y9395050923 arrives tomorrow
-1P3092093452 out for delivery by 11PM
-`
-	write(response, tracking)
+	numbers := request.URL.Query()["num"]
+	if len(numbers) == 0 {
+		// if no numbers param then return static list of tracking info
+		response.WriteHeader(http.StatusBadRequest)
+		write(response, "error: tracking number(s) not provided")
+		return
+	}
+	for _, num := range numbers {
+		write(response, num+" arrives in X days\n")
+	}
 }
 
 // handlers toggle Failure Mode
