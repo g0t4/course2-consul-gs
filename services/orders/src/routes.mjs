@@ -24,14 +24,14 @@ function addRoutes(server) {
     method: "GET",
     path: "/orders/report/{id}",
     options: { description: "calls shipments service" },
-    handler: (request) => {
+    handler: async (request) => {
       throwIfFailureMode();
       var orderId = request.params.id;
-      var shipments = shipmentsClient.getShipmentsForOrder(orderId);
+      var shipments = await shipmentsClient.getShipmentsForOrder(orderId);
       return `
       Order Report <br/>
       Order ID: ${orderId} <br/><br/>
-      Shipments: ${JSON.stringify(shipments)} <br/>
+      Shipments: ${JSON.stringify(shipments.data)} <br/>
       `;
     },
   });

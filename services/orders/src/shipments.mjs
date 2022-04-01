@@ -1,8 +1,12 @@
+import axios from "axios";
+
 const shipmentsClient = {
   getShipmentsForOrder(orderId) {
-    // todo
-    return [];
+    return axios.get("http://shipments:5000/shipments");
   },
 };
 
 export { shipmentsClient };
+
+// https://www.npmjs.com/package/axios
+// https://axios-http.com/
