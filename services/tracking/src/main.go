@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 )
@@ -48,11 +49,21 @@ func getTracking(response http.ResponseWriter, request *http.Request) {
 		write(response, "error: tracking number(s) not provided")
 		return
 	}
-	write(response, "{\n")
+
+	// response will be a JSON object with keys = tracking numbers, value = tracking status of respective tracking number
+	trackings := make(map[string]interface{})
+
 	for _, num := range numbers {
-		write(response, "'"+num+"': 'arrives in X days'\n")
+		trackings[num] = "arrives in X days"
 	}
-	write(response, "}\n")
+
+	jsonTracking, err := json.Marshal(trackings)
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		log.Println("[ERROR] Error marshalling trackings to json", err)
+		return
+	}
+	response.Write(jsonTracking)
 }
 
 // handlers toggle Failure Mode
