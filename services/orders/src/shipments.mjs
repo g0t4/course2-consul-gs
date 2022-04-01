@@ -2,7 +2,7 @@ import axios from "axios";
 
 const shipmentsClient = {
   getShipmentsForOrder(orderId) {
-    return axios.get("http://shipments.service.consul:5000/shipments");
+    return axios.get("http://shipments:5000/shipments");
   },
 };
 
