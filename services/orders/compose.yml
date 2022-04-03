@@ -1,0 +1,15 @@
+services:
+  orders:
+    build: .
+    image: weshigbee/consul2-orders
+    ports:
+      - "3000:3000"
+#    network_mode: "service:consul"
+
+  # consul:
+  #   image: consul
+  #   command: [ "agent", "-dev", "-dns-port", "53" ]
+  #   ports:
+  #     - "8500:8500"
+  #     - "8600:53/udp"
+  #     - "8600:53/tcp"
