@@ -10,6 +10,7 @@ RUN apt-get update \
     iputils-ping \
     tree \
   && rm -rf /var/lib/apt/lists/*
+  # useful for troubleshooting DNS and other networking config
 
 COPY src/package.json .
 RUN npm install
