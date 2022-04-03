@@ -7,6 +7,9 @@ services:
     dns: "192.168.1.132"
       # use host IP to predictably use consul DNS
       #
+      # http://localhost:3000/orders/report/1
+      #   - handler for report uses Service Discovery (via DNS out of the box)
+      #  
       # run consul agent such that dns port is listening on DDfM/W host  
       # sudo consul agent -dev -dns-port 53 -client 0.0.0.0 -recursor 1.1.1.1
       # of course register shipments service (wherever it resides), i.e. host port:
@@ -17,7 +20,7 @@ services:
       #   consul services register -name shipments -port 5000
       # FYI deregister demo too
       #   consul services deregister -id shipments
-      #   refresh localhost:3000/orders/report/1 # fails again - ISE 500
+      #   refresh http://localhost:3000/orders/report/1 # fails again - ISE 500
   #
   # consul:
   #   image: consul
