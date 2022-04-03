@@ -58,6 +58,21 @@ function addRoutes(server) {
       return message;
     },
   });
+
+  server.route({
+    method: "GET",
+    path: "/",
+    options: { description: "list routes" },
+    handler: () => {
+      throwIfFailureMode();
+      return `routes: <br/>
+/orders/report/{id} - generate order report (calls shipments service) <br/>
+/orders/submit - sends email notification <br/>
+/simulate/failure - enable Failure Mode <br/>
+/simulate/resume - disable Failure Mode <br/>
+`;
+    },
+  });
 }
 
 export { addRoutes };
