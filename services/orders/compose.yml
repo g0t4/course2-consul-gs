@@ -5,7 +5,7 @@ services:
     ports:
       - "3000:3000"
     dns: "192.168.1.132"
-      # use host IP to predictably use consul DNS
+      # use host IP to predictably use consul DNS (check firewalls)
       #
       # http://localhost:3000/orders/report/1
       #   - handler for report uses Service Discovery (via DNS out of the box)
