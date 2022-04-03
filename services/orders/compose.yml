@@ -4,7 +4,9 @@ services:
     image: weshigbee/consul2-orders
     ports:
       - "3000:3000"
-#    network_mode: "service:consul"
+    dns: "192.168.1.132" # use host IP to predictably use consul DNS
+      # run consul agent such that dns port is listening on DDfM/W host  
+      # sudo consul agent -dev -dns-port 53 -client 0.0.0.0 -recursor 1.1.1.1
 
   # consul:
   #   image: consul
