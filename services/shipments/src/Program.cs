@@ -17,8 +17,6 @@ var app = appBuilder.Build();
 
 Config.Instance = new Config(app.Configuration);
 
-
-
 // TODO - decide if I want any custom headers added - or add another means of observability (i.e. tracing)
 // app.Use(async (context, next) =>
 // {
@@ -28,19 +26,19 @@ Config.Instance = new Config(app.Configuration);
 
 app.MapGet("/simulate/failure", () =>
 {
-  Config.Toggles.IsFailureMode = true;
+  Config.Instance.Toggles.IsFailureMode = true;
   return "Failure Mode enabled";
 });
 app.MapGet("/simulate/resume", () =>
 {
-  Config.Toggles.IsFailureMode = false;
+  Config.Instance.Toggles.IsFailureMode = false;
   return "Failure Mode disabled";
 });
 
 // Failure Mode middleware - if failure mode then returns 500 internal server error - else calls next middleware
 app.Use(async (context, next) =>
 {
-  if (Config.Toggles.IsFailureMode)
+  if (Config.Instance.Toggles.IsFailureMode)
   {
     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
     await context.Response.WriteAsync("Failure Mode enabled");
@@ -52,7 +50,7 @@ app.Use(async (context, next) =>
 
 app.MapGet("/shipments", async () =>
 {
-  if (!Config.Toggles.IncludeTrackingInfo)
+  if (!Config.Instance.Toggles.IncludeTrackingInfo)
   {
     // return shipments with tracking numbers
     return Shipment.Shipments
