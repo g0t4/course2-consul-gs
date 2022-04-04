@@ -17,6 +17,7 @@ public class Config
     TrackingServiceUrl = new Uri(shipments["TrackingServiceUrl"] ?? string.Empty);
     Console.WriteLine("CONFIG " + new { TrackingServiceUrl });
 
+    // for consistency use HTTP_IP/PORT like other service examples (so don't use Env Var config provider)
     var HTTP_IP = Environment.GetEnvironmentVariable("HTTP_IP") ?? "0.0.0.0";
     var HTTP_PORT = Environment.GetEnvironmentVariable("HTTP_PORT") ?? "5000";
     HTTP_ADDRESS = IPEndPoint.Parse($"{HTTP_IP}:{HTTP_PORT}");

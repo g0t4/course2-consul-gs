@@ -5,6 +5,10 @@ var appBuilder = WebApplication.CreateBuilder(args);
 // include env vars w/ MY_ prefix 
 // (default web app builder includes ASPNETCORE_)
 appBuilder.Configuration.AddEnvironmentVariables("MY_");
+// net result, can pass ENV VARs such as:
+// MY_SHIPMENTS__TOGGLES__INITIALFAILUREMODE=true
+// MY_ prefix, then sections are delimited by __
+// by default, b/c of ASPNETCORE_ you could also use: ASPNETCORE_SHIPMENTS__TOGGLES__INITIALFAILUREMODE=true
 
 appBuilder.WebHost.ConfigureKestrel((context, serverOptions) =>
 {
