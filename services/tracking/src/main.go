@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 )
 
 var failureMode = false
@@ -95,16 +96,28 @@ func defaultHandler(response http.ResponseWriter, request *http.Request) {
 }
 
 func main() {
-
 	mux := http.NewServeMux() // https://pkg.go.dev/net/http#NewServeMux & https://pkg.go.dev/net/http#ServeMux
-	server := &http.Server{Addr: "0.0.0.0:8080", Handler: mux}
+
+	http_port := getEnv("HTTP_PORT", "8080")
+	http_ip := getEnv("HTTP_IP", "0.0.0.0")
+	http_addr := http_ip + ":" + http_port
+	server := &http.Server{Addr: http_addr, Handler: mux}
+
 	mux.HandleFunc("/tracking/", logThen(failThen(getTracking)))
 	mux.HandleFunc("/simulate/failure/", logThen(simulateFailure))
 	mux.HandleFunc("/simulate/resume/", logThen(simulateResume))
 	mux.HandleFunc("/", logThen(failThen(defaultHandler)))
+
 	info("tracking service @ " + server.Addr)
 	server.ListenAndServe()
+}
 
+func getEnv(key string, defaultValue string) string {
+	value := os.Getenv(key)
+	if len(value) > 0 {
+		return value
+	}
+	return defaultValue
 }
 
 // docs https://pkg.go.dev/net/http
