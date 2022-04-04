@@ -3,4 +3,4 @@
 # brew install dotnet-sdk-preview
 
 # run + reload changes
-dotnet watch
+dotnet watch --project src/
