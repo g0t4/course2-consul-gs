@@ -28,11 +28,11 @@ function addRoutes(server) {
       throwIfFailureMode();
       var orderId = request.params.id;
       var shipments = await shipmentsClient.getShipmentsForOrder(orderId);
-      return `
-      Order Report <br/>
-      Order ID: ${orderId} <br/><br/>
-      Shipments: ${JSON.stringify(shipments.data)} <br/>
-      `;
+      return {
+        title: "Order Report",
+        orderId,
+        shipments: shipments.data,
+      };
     },
   });
 
