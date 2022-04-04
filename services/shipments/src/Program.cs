@@ -20,12 +20,11 @@ var app = appBuilder.Build();
 
 Config.Instance = new Config(app.Configuration);
 
-// TODO - decide if I want any custom headers added - or add another means of observability (i.e. tracing)
-// app.Use(async (context, next) =>
-// {
-//   context.Response.Headers.Add("shipments-hostname", Dns.GetHostName());
-//   await next();
-// });
+app.Use(async (context, next) =>
+{
+  context.Response.Headers.Add("shipments-hostname", Dns.GetHostName());
+  await next();
+});
 
 app.MapGet("/simulate/failure", () =>
 {
