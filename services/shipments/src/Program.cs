@@ -2,6 +2,10 @@ using System.Net;
 
 var appBuilder = WebApplication.CreateBuilder(args);
 
+// include env vars w/ MY_ prefix 
+// (default web app builder includes ASPNETCORE_)
+appBuilder.Configuration.AddEnvironmentVariables("MY_");
+
 appBuilder.WebHost.ConfigureKestrel((context, serverOptions) =>
 {
   // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints#bind-to-a-tcp-socket
@@ -12,6 +16,7 @@ appBuilder.WebHost.ConfigureKestrel((context, serverOptions) =>
 var app = appBuilder.Build();
 
 Config.ValidateAndLoad(app.Configuration);
+
 
 // TODO - decide if I want any custom headers added - or add another means of observability (i.e. tracing)
 // app.Use(async (context, next) =>
