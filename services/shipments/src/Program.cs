@@ -10,12 +10,13 @@ appBuilder.WebHost.ConfigureKestrel((context, serverOptions) =>
 {
   // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints#bind-to-a-tcp-socket
   // listen on http://0.0.0.0:5000
-  serverOptions.Listen(Config.HTTP_ADDRESS);
+  serverOptions.Listen(Config.Instance.HTTP_ADDRESS);
 });
 
 var app = appBuilder.Build();
 
-Config.ValidateAndLoad(app.Configuration);
+Config.Instance = new Config(app.Configuration);
+
 
 
 // TODO - decide if I want any custom headers added - or add another means of observability (i.e. tracing)

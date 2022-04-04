@@ -1,35 +1,39 @@
 
 using System.Net;
 
-public static class Config
+public class Config
 {
 
-  public static Uri TrackingServiceUrl;
+  public static Config Instance;
 
-  public static IPEndPoint HTTP_ADDRESS;
+  public Uri TrackingServiceUrl;
+  public IPEndPoint HTTP_ADDRESS;
+  public ConfigToggles Toggles;
 
-  public static class Toggles
+  public Config(IConfiguration config)
   {
-    public static bool IncludeTrackingInfo = false;
-    public static bool IsFailureMode = false;
-  }
+    var shipments = config.GetSection("Shipments");
 
-  public static void ValidateAndLoad(IConfiguration config)
-  {
-
-    var shipments = config.GetSection("shipments");
-    
-    TrackingServiceUrl = new Uri(shipments["TrackingServiceUrl"]);
+    TrackingServiceUrl = new Uri(shipments["TrackingServiceUrl"] ?? string.Empty);
     Console.WriteLine("CONFIG " + new { TrackingServiceUrl });
 
     var HTTP_IP = Environment.GetEnvironmentVariable("HTTP_IP") ?? "0.0.0.0";
     var HTTP_PORT = Environment.GetEnvironmentVariable("HTTP_PORT") ?? "5000";
     HTTP_ADDRESS = IPEndPoint.Parse($"{HTTP_IP}:{HTTP_PORT}");
 
-    var toggles = shipments.GetSection("Toggles");
-    Toggles.IsFailureMode = toggles.GetValue<bool>("InitialFailureMode");
-    Toggles.IncludeTrackingInfo = toggles.GetValue<bool>("IncludeTrackingInfo");
-    Console.WriteLine("CONFIG " + new { Toggles.IsFailureMode, Toggles.IncludeTrackingInfo });
+    Toggles = new ConfigToggles(shipments.GetSection("Toggles"));
+  }
+}
 
+public class ConfigToggles
+{
+  public bool IncludeTrackingInfo;
+  public bool IsFailureMode;
+
+  public ConfigToggles(IConfigurationSection config)
+  {
+    IsFailureMode = config.GetValue<bool>("InitialFailureMode");
+    IncludeTrackingInfo = config.GetValue<bool>("IncludeTrackingInfo");
+    Console.WriteLine("CONFIG " + new { IsFailureMode, IncludeTrackingInfo });
   }
 }
