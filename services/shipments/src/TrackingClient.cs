@@ -3,7 +3,7 @@ using System.Net.Http;
 
 public static class TrackingClient
 {
-  private static readonly HttpClient httpClient = new HttpClient { BaseAddress = Config.TrackingServiceBaseUri };
+  private static readonly HttpClient httpClient = new HttpClient { BaseAddress = Config.TrackingServiceUrl };
 
   public static async Task<Dictionary<string, string>> GetTrackingAsync(IEnumerable<string> numbers)
   {

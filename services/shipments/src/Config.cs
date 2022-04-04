@@ -4,7 +4,7 @@ using System.Net;
 public static class Config
 {
 
-  public static Uri TrackingServiceBaseUri;
+  public static Uri TrackingServiceUrl;
 
   public static IPEndPoint HTTP_ADDRESS;
 
@@ -18,8 +18,8 @@ public static class Config
   {
 
     var shipments = config.GetSection("shipments");
-    TrackingServiceBaseUri = new Uri(shipments["TrackingServiceBaseUri"] ?? "http://localhost:8080");
-    Console.WriteLine("CONFIG " + new { TrackingServiceBaseUri });
+    TrackingServiceUrl = new Uri(shipments["TrackingServiceUrl"] ?? "http://localhost:8080");
+    Console.WriteLine("CONFIG " + new { TrackingServiceUrl });
 
     var HTTP_IP = Environment.GetEnvironmentVariable("HTTP_IP") ?? "0.0.0.0";
     var HTTP_PORT = Environment.GetEnvironmentVariable("HTTP_PORT") ?? "5000";
