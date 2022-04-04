@@ -2,7 +2,7 @@
 public static class Config
 {
 
-  public static Uri TrackingServiceBaseUri = new Uri("http://tracking:8080");
+  public static Uri TrackingServiceBaseUri;
 
   public static class Toggles
   {
@@ -14,7 +14,7 @@ public static class Config
   {
 
     var shipments = config.GetSection("shipments");
-    TrackingServiceBaseUri = new Uri(shipments["TrackingServiceBaseUri"] ?? "");
+    TrackingServiceBaseUri = new Uri(shipments["TrackingServiceBaseUri"] ?? "http://localhost:8080");
     Console.WriteLine("CONFIG " + new { TrackingServiceBaseUri });
 
     var toggles = shipments.GetSection("Toggles");
