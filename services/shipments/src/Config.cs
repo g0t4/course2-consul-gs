@@ -18,7 +18,8 @@ public static class Config
   {
 
     var shipments = config.GetSection("shipments");
-    TrackingServiceUrl = new Uri(shipments["TrackingServiceUrl"] ?? "http://localhost:8080");
+    
+    TrackingServiceUrl = new Uri(shipments["TrackingServiceUrl"]);
     Console.WriteLine("CONFIG " + new { TrackingServiceUrl });
 
     var HTTP_IP = Environment.GetEnvironmentVariable("HTTP_IP") ?? "0.0.0.0";
