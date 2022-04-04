@@ -1,8 +1,9 @@
 import axios from "axios";
+import { config } from "./config.mjs";
 
 const shipmentsClient = {
   getShipmentsForOrder(orderId) {
-    return axios.get("http://shipments.service.consul:5000/shipments");
+    return axios.get(`${config.SHIPMENTS_URL}/shipments`);
   },
 };
 
