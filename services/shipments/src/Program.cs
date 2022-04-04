@@ -6,9 +6,8 @@ appBuilder.WebHost.ConfigureKestrel((context, serverOptions) =>
 {
   // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints#bind-to-a-tcp-socket
   // listen on http://0.0.0.0:5000
-  serverOptions.Listen(System.Net.IPAddress.Any, 5000);
+  serverOptions.Listen(Config.HTTP_ADDRESS);
 });
-
 
 var app = appBuilder.Build();
 

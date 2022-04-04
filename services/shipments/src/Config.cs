@@ -1,8 +1,12 @@
 
+using System.Net;
+
 public static class Config
 {
 
   public static Uri TrackingServiceBaseUri;
+
+  public static IPEndPoint HTTP_ADDRESS;
 
   public static class Toggles
   {
@@ -16,6 +20,10 @@ public static class Config
     var shipments = config.GetSection("shipments");
     TrackingServiceBaseUri = new Uri(shipments["TrackingServiceBaseUri"] ?? "http://localhost:8080");
     Console.WriteLine("CONFIG " + new { TrackingServiceBaseUri });
+
+    var HTTP_IP = Environment.GetEnvironmentVariable("HTTP_IP") ?? "0.0.0.0";
+    var HTTP_PORT = Environment.GetEnvironmentVariable("HTTP_PORT") ?? "5000";
+    HTTP_ADDRESS = IPEndPoint.Parse($"{HTTP_IP}:{HTTP_PORT}");
 
     var toggles = shipments.GetSection("Toggles");
     Toggles.IsFailureMode = toggles.GetValue<bool>("InitialFailureMode");
