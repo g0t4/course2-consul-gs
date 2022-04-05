@@ -23,6 +23,8 @@ cp /vagrant/provision/dotfiles/.bashrc /home/vagrant/.bashrc
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 rm get-docker.sh
+sudo usermod -aG docker vagrant
+# if manually installing docker then either use: # newgrp docker # or restart VM # to pickup group change
 
 # suppress login messages
 touch /home/vagrant/.hushlogin
