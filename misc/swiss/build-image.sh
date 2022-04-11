@@ -1,1 +1,0 @@
-docker image build --pull -t weshigbee/consul2-swiss .
