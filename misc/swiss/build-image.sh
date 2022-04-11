@@ -1,1 +1,1 @@
-docker image build -t weshigbee/consul2-swiss .
+docker image build --pull -t weshigbee/consul2-swiss .
