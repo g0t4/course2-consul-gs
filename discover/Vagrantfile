@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+  config.vm.box = 'ubuntu/jammy64' # ubuntu 22.04
+
+  # 1 server node: s1
+  (1..1).each do |number|
+    config.vm.define "s#{number}" do |node|
+      node.vm.network 'private_network', ip: "192.168.56.1#{number}"
+      node.vm.network 'forwarded_port', id: 'ssh', host: "561#{number}", guest: '22'
+      node.vm.hostname = "s#{number}"
+    end
+  end
+
+  # 2 client nodes (agents): c1 c2
+  (1..2).each do |number|
+    config.vm.define "c#{number}" do |node|
+      node.vm.network 'private_network', ip: "192.168.56.2#{number}"
+      node.vm.network 'forwarded_port', id: 'ssh', host: "562#{number}", guest: '22'
+      node.vm.hostname = "c#{number}"
+    end
+  end
+
+  config.vm.provision :shell, privileged: false, path: 'provision/install.helpers.sh'
+  config.vm.provision :shell, privileged: false, path: 'provision/install.consul.sh'
+
+  config.vm.provider 'virtualbox' do |vb|
+    # vb.gui = true
+    vb.memory = '4096'
+    vb.cpus = 4
+  end
+end
