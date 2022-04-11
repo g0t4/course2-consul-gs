@@ -37,7 +37,7 @@ app.Use(async (context, next) =>
   if (Config.Instance.Toggles.IsFailureMode)
   {
     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-    await context.Response.WriteAsync("Failure Mode enabled");
+    await context.Response.WriteAsync("Failure Mode is enabled, failing request.");
     return;
   }
 
@@ -65,9 +65,12 @@ app.MapGet("/shipments", async () =>
 
 });
 
-app.MapGet("/", () => @"
+app.MapGet("/", async context =>
+{
+  context.Response.Headers["Content-Type"] = "text/html";
+  await context.Response.WriteAsync(@"
 routes:
-
+<br/>
 <a href='/shipments'>/shipments</a> - get shipment data 
 <br/>
 <a href='/simulate/failure'>/simulate/failure</a> - enable Failure Mode 
@@ -75,6 +78,8 @@ routes:
 <a href='/simulate/resume'>/simulate/resume</a> - disable Failure Mode
 <br/>
 ");
+
+});
 
 app.Run();
 
