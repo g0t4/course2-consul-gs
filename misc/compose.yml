@@ -1,0 +1,7 @@
+services:
+  dog:
+    image: weshigbee/consul2-dog
+    build: ./dog/
+  swiss:
+    image: weshigbee/consul2-swiss
+    build: ./swiss/
