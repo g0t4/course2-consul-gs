@@ -68,9 +68,12 @@ app.MapGet("/shipments", async () =>
 app.MapGet("/", () => @"
 routes:
 
-/shipments - get shipment data
-/simulate/failure - enable Failure Mode
-/simulate/resume - disable Failure Mode
+<a href='/shipments'>/shipments</a> - get shipment data 
+<br/>
+<a href='/simulate/failure'>/simulate/failure</a> - enable Failure Mode 
+<br/>
+<a href='/simulate/resume'>/simulate/resume</a> - disable Failure Mode
+<br/>
 ");
 
 app.Run();
