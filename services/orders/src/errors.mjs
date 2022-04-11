@@ -1,3 +1,5 @@
+import process from "process";
+
 function abortOnUnhandledRejection() {
   process.on("unhandledRejection", (error) => {
     console.error(
