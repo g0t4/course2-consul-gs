@@ -67,7 +67,7 @@ app.MapGet("/shipments", async () =>
 
 app.MapGet("/", async context =>
 {
-  context.Response.Headers["Content-Type"] = "text/html";
+  context.Response.ContentType = "text/html";
   await context.Response.WriteAsync(@"
 routes:
 <br/>
