@@ -1,0 +1,1 @@
+docker container run --rm -it weshigbee/consul2-swiss
