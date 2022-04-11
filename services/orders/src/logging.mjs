@@ -9,7 +9,16 @@ function info(message) {
   console.log("[INFO] " + message);
 }
 
+function logConfig() {
+  info(`LOG_LEVEL: ${config.LOG_LEVEL}`);
+  info(`SHIPMENTS_URL: ${config.SHIPMENTS_URL}`);
+  verbose(`HTTP_PORT: ${config.HTTP_PORT}`);
+  verbose(`HTTP_IP: ${config.HTTP_IP}`);
+}
+
 function setupLogging(server) {
+  logConfig();
+
   server.events.on("response", (request) => {
     // https://hapi.dev/api#-response-event
     // https://hapi.dev/api#request
