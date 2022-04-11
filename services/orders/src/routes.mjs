@@ -66,10 +66,13 @@ function addRoutes(server) {
     handler: () => {
       throwIfFailureMode();
       return `routes: <br/>
-/orders/report/{id} - generate order report (calls shipments service) <br/>
-/orders/submit - sends email notification <br/>
-/simulate/failure - enable Failure Mode <br/>
-/simulate/resume - disable Failure Mode <br/>
+<a href="/orders/report/1">/orders/report/{id}</a> - generate order report (calls shipments service) 
+<br/>
+<a href="/orders/submit">/orders/submit</a> - sends email notification 
+<br/>
+<a href="/simulate/failure">/simulate/failure</a> - enable Failure Mode 
+<br/>
+<a href="/simulate/resume">/simulate/resume</a> - disable Failure Mode <br/>
 `;
     },
   });
