@@ -32,6 +32,7 @@ function addRoutes(server) {
         title: "Order Report",
         orderId,
         shipments: shipments.data,
+        headers: shipments.headers
       };
     },
   });
