@@ -94,4 +94,9 @@ minimal APIs
 routing
 - https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing
 
+handlers
+- https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httpcontext
+- https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httpresponse
+- https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httprequest
+
 */
