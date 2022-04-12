@@ -85,8 +85,9 @@ func simulateResume(response http.ResponseWriter, request *http.Request) {
 
 // catch all handler - shows a list of registered routes
 func defaultHandler(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "text/html")
 	var routeList = `routes:
-
+<br/>
 <a href="/tracking?num=X&num=Y">/tracking?num=X&num=Y</a> - get tracking info, expects + tracking numbers ('num')
 <br/>
 <a href="/simulate/failure">/simulate/failure</a> - enable Failure Mode
