@@ -19,6 +19,14 @@ function logConfig() {
 function setupLogging(server) {
   logConfig();
 
+  // log request errors (ie connection failure to shipments service, ie IPv6/localhost)
+  server.events.on("request", (request, event, tags) => {
+    if (tags.error) {
+      const message = event.error ? event.error.message : "unknown";
+      verbose(`request ${event.request} error: ${message}`);
+    }
+  });
+
   server.events.on("response", (request) => {
     // https://hapi.dev/api#-response-event
     // https://hapi.dev/api#request
