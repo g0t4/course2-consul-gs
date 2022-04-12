@@ -34,7 +34,8 @@ app.MapGet("/simulate/resume", () =>
 // Failure Mode middleware - if failure mode then returns 500 internal server error - else calls next middleware
 app.Use(async (context, next) =>
 {
-  if (Config.Instance.Toggles.IsFailureMode)
+  if (Config.Instance.Toggles.IsFailureMode
+   && !context.Request.Path.StartsWithSegments("/simulate"))
   {
     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
     await context.Response.WriteAsync("Failure Mode is enabled, failing request.");
