@@ -20,6 +20,11 @@ var app = appBuilder.Build();
 
 Config.Instance = new Config(app.Configuration);
 
+app.Use(async(context, next) =>{
+  context.Response.Headers["Shipments-Instance"] = Dns.GetHostName();
+  await next(context);
+});
+
 app.MapGet("/simulate/failure", () =>
 {
   Config.Instance.Toggles.IsFailureMode = true;
