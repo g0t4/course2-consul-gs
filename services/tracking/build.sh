@@ -1,1 +1,1 @@
-go build -o server.out src/server.go
+go build -o main.out src/main.go
