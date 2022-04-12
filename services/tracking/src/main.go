@@ -87,9 +87,11 @@ func simulateResume(response http.ResponseWriter, request *http.Request) {
 func defaultHandler(response http.ResponseWriter, request *http.Request) {
 	var routeList = `routes:
 
-/tracking?num=X&num=Y - get tracking info, expects + tracking numbers ('num')
-/simulate/failure - enable Failure Mode
-/simulate/resume - disable Failure Mode
+<a href="/tracking?num=X&num=Y">/tracking?num=X&num=Y</a> - get tracking info, expects + tracking numbers ('num')
+<br/>
+<a href="/simulate/failure">/simulate/failure</a> - enable Failure Mode
+<br/>
+<a href="/simulate/resume">/simulate/resume</a> - disable Failure Mode
 `
 
 	write(response, routeList)
