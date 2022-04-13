@@ -1,5 +1,5 @@
 import { config } from "./config.mjs";
-import { info, verbose } from "./logging.mjs";
+import { info, verbose, error } from "./logging.mjs";
 import { shipmentsClient } from "./shipments.mjs";
 import { sendOrderedEmail } from "./email.mjs";
 function throwIfFailureMode() {
@@ -13,9 +13,10 @@ function addRoutes(server) {
     method: "GET",
     path: "/orders/submit",
     options: { description: "sends email notification" },
-    handler: () => {
+    handler: async () => {
       throwIfFailureMode();
-      sendOrderedEmail();
+      await sendOrderedEmail();
+        //.catch(e => error(e));
       return "Order submitted and order placed email sent";
     },
   });

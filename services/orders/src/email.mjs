@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 });
 
 function sendOrderedEmail() {
-  transporter.sendMail({
+  return transporter.sendMail({
     from: "orders@example.com",
     to: "user@example.com",
     subject: "Order submitted",

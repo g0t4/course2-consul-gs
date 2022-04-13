@@ -5,6 +5,10 @@ function verbose(message) {
   console.log("[VERBOSE] " + message);
 }
 
+function error(error, message) {
+  console.error("[ERROR] " + message, error);
+}
+
 function info(message) {
   console.log("[INFO] " + message);
 }
@@ -55,4 +59,4 @@ function setupLogging(server) {
   });
 }
 
-export { info, verbose, setupLogging };
+export { info, verbose, error, setupLogging };
