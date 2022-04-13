@@ -8,7 +8,7 @@ COPY src/*.go /src/.
 RUN go build main.go
 
 
-FROM ubuntu:22.04 AS runtime-env
+FROM debian:buster-slim AS runtime-env
 
 WORKDIR /app
 EXPOSE 8080
