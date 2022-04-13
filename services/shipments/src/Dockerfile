@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0.100-preview.2 AS build-env
 
 WORKDIR /src
 
@@ -13,7 +13,7 @@ RUN dotnet publish --configuration Release --output /app
 
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS run-env
+FROM mcr.microsoft.com/dotnet/aspnet:7.0.0-preview.2 AS run-env
 
 WORKDIR /app
 EXPOSE 5000
