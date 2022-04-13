@@ -94,6 +94,7 @@ function addRoutes(server) {
 }
 
 function errorResponse(h, e, description) {
+  // note: run the risk of serialization failures when logging message and/or responding with it - just FYI - so far ok
   error(e);
   return h
     .response({
