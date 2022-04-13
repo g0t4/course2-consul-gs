@@ -8,16 +8,22 @@ function throwIfFailureMode() {
   throw new Error("simulated failure");
 }
 
+function errorIfFailureMode(h) {
+  if (!config.failureMode) return;
+  verbose("request made during failure mode, throwing error...");
+  return h.response("simulated failure").code(500);
+}
+
 function addRoutes(server) {
   server.route({
     method: "GET",
     path: "/orders/submit",
     options: { description: "sends email notification" },
     handler: async (request, h) => {
-      throwIfFailureMode();
-      return await sendOrderedEmail()
-        .then(() => h.response("Order submitted, email sent"))
-        .catch((e) => errorResponse(h, e, "Failure sending email"));
+      return errorIfFailureMode(h)
+        || await sendOrderedEmail()
+            .then(() => h.response("Order submitted, email sent"))
+            .catch((e) => errorResponse(h, e, "Failure sending email"));
     },
   });
 
