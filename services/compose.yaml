@@ -1,0 +1,28 @@
+services:
+  orders:
+    build: ./orders/
+    image: weshigbee/consul2-orders
+    environment:
+      SHIPMENTS_URL: "http://shipments:5000" # docker SD
+      SMTP_HOST: "smtp" # docker SD
+    ports:
+      - "3000:3000"
+  shipments:
+    build: ./shipments/src/
+    image: weshigbee/consul2-shipments
+    ports:
+      - "5000:5000"
+  smtp:
+    image: mailhog/maihog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+  dog:
+    image: weshigbee/consul2-dog
+    profiles:
+      - only-run
+  # tracking:
+  #   build: ./tracking/
+  #   image: weshigbee/consul2-tracking
+  #   ports:
+  #   - "8080:8080"
