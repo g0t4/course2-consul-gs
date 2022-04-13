@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
   dnsutils iproute2 \
   iputils-ping iputils-arping iputils-tracepath \
   command-not-found \
+  procps psmisc \
   && rm -rf /var/lib/apt/lists/*
 
 RUN echo ". ~/.bashrc.swiss" >> /root/.bashrc

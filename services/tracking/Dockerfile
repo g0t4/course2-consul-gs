@@ -15,7 +15,7 @@ EXPOSE 8080
 
 # helpers
 RUN apt-get update \
-  && apt-get install -y curl dnsutils iputils-ping tree command-not-found iproute2 \
+  && apt-get install -y curl dnsutils iputils-ping tree command-not-found iproute2 procps psmisc \
   && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build-env /src/main /app/main
