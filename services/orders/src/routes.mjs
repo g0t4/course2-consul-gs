@@ -17,7 +17,7 @@ function addRoutes(server) {
       throwIfFailureMode();
       await sendOrderedEmail();
         //.catch(e => error(e));
-      return "Order submitted and order placed email sent";
+      return "Order submitted, email sent";
     },
   });
 
