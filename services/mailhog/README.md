@@ -26,7 +26,7 @@ docker container run --rm -it --name mh \
 curl -s http://localhost:8025/api/v2/messages | jq
 
 # send an email (uses sendmail in container)
-echo "hello world" | docker container exec mh \
+echo "hello world" | docker container exec -i mh \
   sendmail -S localhost:1025 -f me@me.com you@you.com
 
 ```
