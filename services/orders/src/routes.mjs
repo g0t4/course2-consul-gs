@@ -32,10 +32,10 @@ function addRoutes(server) {
     path: "/orders/report/{id}",
     options: { description: "calls shipments service" },
     handler: async (request, h) => {
-
-      throwIfFailureMode();
-      var orderId = request.params.id;
-      return await shipmentsClient.getShipmentsForOrder(orderId)
+      const orderId = request.params.id;
+      
+      return errorIfFailureMode(h)
+        || await shipmentsClient.getShipmentsForOrder(orderId)
         .then(shipments => 
           h.response({
             title: "Order Report",
@@ -47,7 +47,7 @@ function addRoutes(server) {
           .header("shipments-instance", shipments.headers["shipments-instance"])
         )
         .catch(e => errorResponse(h, e, "Failure querying shipments"));
-      
+
     },
   });
 
