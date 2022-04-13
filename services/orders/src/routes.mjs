@@ -81,8 +81,18 @@ function addRoutes(server) {
 
 export { addRoutes };
 
-// hapi APIs: 
-// server: https://hapi.dev/api#server
-// handler parameters:
-// request: https://hapi.dev/api#request
-// response toolkit: https://hapi.dev/api#response-toolkit
+/*
+
+Server: 
+- https://hapi.dev/api#server
+
+Routing:
+- https://hapi.dev/tutorials/routing
+
+Handlers: 
+- https://hapi.dev/tutorials/routing#handler
+- handler parameters:
+  - `request`: https://hapi.dev/api#request
+  - `h` (response toolkit): https://hapi.dev/api#response-toolkit
+
+*/
