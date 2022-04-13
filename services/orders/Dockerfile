@@ -1,4 +1,4 @@
-FROM node AS runtime-env
+FROM node:slim AS runtime-env
 
 EXPOSE 3000
 WORKDIR /src
