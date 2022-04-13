@@ -10,9 +10,6 @@ services:
   shipments:
     build: ./shipments/src/
     image: weshigbee/consul2-shipments
-    environment:
-      MY_SHIPMENTS__TOGGLES__INCLUDETRACKINGINFO: true
-      MY_SHIPMENTS__TRACKINGSERVICEURL: http://tracking:8080 # docker SD
     ports:
       - "5000:5000"
   mails:
@@ -25,3 +22,10 @@ services:
     image: weshigbee/consul2-tracking
     ports:
       - "8080:8080"
+
+# disabled shipments -> tracking (env vars configures this)
+# - simplify initial demos to just (orders -> shipments)
+# - to enable move environment block (below) to shipments service
+#environment:
+#  MY_SHIPMENTS__TOGGLES__INCLUDETRACKINGINFO: true # can set false to disable too
+#  MY_SHIPMENTS__TRACKINGSERVICEURL: http://tracking:8080 # docker SD
