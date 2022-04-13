@@ -4,7 +4,7 @@ services:
     image: weshigbee/consul2-orders
     environment:
       SHIPMENTS_URL: "http://shipments:5000" # docker SD
-      SMTP_HOST: "smtp" # docker SD
+      SMTP_HOST: "mails" # docker SD
     ports:
       - "3000:3000"
   shipments:
@@ -12,7 +12,7 @@ services:
     image: weshigbee/consul2-shipments
     ports:
       - "5000:5000"
-  smtp:
+  mails:
     image: mailhog/mailhog
     ports:
       - "8025:8025"
