@@ -20,8 +20,14 @@ var app = appBuilder.Build();
 
 Config.Instance = new Config(app.Configuration);
 
-app.Use(async(context, next) =>{
+app.Use(async (context, next) =>
+{
   context.Response.Headers["Shipments-Instance"] = Dns.GetHostName();
+  // https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.connectioninfo
+  context.Response.Headers["shipments-local-ip"] = context.Connection.LocalIpAddress?.ToString();
+  context.Response.Headers["shipments-local-port"] = context.Connection.LocalPort.ToString();
+  context.Response.Headers["shipments-remote-ip"] = context.Connection.RemoteIpAddress?.ToString();
+  context.Response.Headers["shipments-remote-port"] = context.Connection.RemotePort.ToString();
   await next(context);
 });
 
