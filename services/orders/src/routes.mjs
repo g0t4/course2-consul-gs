@@ -1,7 +1,7 @@
 import { config } from "./config.mjs";
 import { info, verbose } from "./logging.mjs";
 import { shipmentsClient } from "./shipments.mjs";
-
+import { sendOrderedEmail } from "./email.mjs";
 function throwIfFailureMode() {
   if (!config.failureMode) return;
   verbose("request made during failure mode, throwing error...");
@@ -15,8 +15,8 @@ function addRoutes(server) {
     options: { description: "sends email notification" },
     handler: () => {
       throwIfFailureMode();
-      // TODO send email notification
-      return "Order submitted";
+      sendOrderedEmail();
+      return "Order submitted and order placed email sent";
     },
   });
 
