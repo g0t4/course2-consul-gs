@@ -1,2 +1,2 @@
 
-npm run --prefix ./src/ start-verbose
+npm start --prefix ./src/  
