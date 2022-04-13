@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
   fzf silversearcher-ag \
   unzip \
   curl wget \
-  dnsutils \
+  dnsutils iproute2 \
   iputils-ping iputils-arping iputils-tracepath \
   command-not-found \
   && rm -rf /var/lib/apt/lists/*
