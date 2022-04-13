@@ -17,10 +17,6 @@ services:
     ports:
       - "8025:8025"
       - "1025:1025"
-  dog:
-    image: weshigbee/consul2-dog
-    profiles:
-      - only-run
   # tracking:
   #   build: ./tracking/
   #   image: weshigbee/consul2-tracking
