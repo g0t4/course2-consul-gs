@@ -7,6 +7,7 @@ function handleSignals(server) {
   });
   process.on("SIGINT", async () => {
     // ctrl+c
+    // could be used to reload config (if had a file or queried an API)
     await server.stop();
   });
 }
