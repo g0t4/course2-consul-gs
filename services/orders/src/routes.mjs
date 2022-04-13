@@ -29,8 +29,8 @@ function addRoutes(server) {
           const response = h.response({
             title: "Order Report",
             orderId,
-            shipments: shipments.data,
             "shipments-instance": shipments.headers["shipments-instance"],
+            shipments: shipments.data,
           });
           // time permit - tracing, metrics - observability + Connect
           Object.entries(shipments.headers)
