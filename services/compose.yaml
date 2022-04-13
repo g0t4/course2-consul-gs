@@ -17,8 +17,8 @@ services:
     ports:
       - "8025:8025"
       - "1025:1025"
-  # tracking:
-  #   build: ./tracking/
-  #   image: weshigbee/consul2-tracking
-  #   ports:
-  #   - "8080:8080"
+  tracking:
+    build: ./tracking/
+    image: weshigbee/consul2-tracking
+    ports:
+      - "8080:8080"
