@@ -9,6 +9,10 @@ const config = {
 
   failureMode: false,
 
+  SMTP_PORT: parseInt(process.env.SMTP_PORT, 10) || 25,
+  // SMTP_HOST can be set to something like "smtp.service.consul"
+  SMTP_HOST: process.env.SMTP_HOST || "127.0.0.1",
+
   // potential values for SHIPMENTS_URL
   // Consul DNS: "http://shipments.service.consul:5000/shipments"
   // 127.0.0.1: "http://127.0.0.1:5000" (careful IPv6/localhost)
