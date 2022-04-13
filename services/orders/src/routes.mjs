@@ -15,9 +15,9 @@ function addRoutes(server) {
     options: { description: "sends email notification" },
     handler: async (request, h) => {
       throwIfFailureMode();
-      return await sendOrderedEmail().then(() =>
-        h.response("Order submitted, email sent")
-      ); // will throw if promise rejected
+      return await sendOrderedEmail()
+        .then(() => h.response("Order submitted, email sent"))
+        .catch((e) => errorResponse(h, e, "Failure sending email"));
     },
   });
 
@@ -78,6 +78,18 @@ function addRoutes(server) {
 `;
     },
   });
+}
+
+function errorResponse(h, e, description) {
+  error(e);
+  return h
+    .response({
+      message: "Internal Server Error",
+      description,
+      error: e,
+      statusCode: 500,
+    })
+    .code(500);
 }
 
 export { addRoutes };
