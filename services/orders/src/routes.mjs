@@ -33,7 +33,8 @@ function addRoutes(server) {
             "shipments-instance": shipments.headers["shipments-instance"],
           });
           // time permit - tracing, metrics - observability + Connect
-          response.header("shipments-instance", shipments.headers["shipments-instance"]);
+          Object.entries(shipments.headers)
+            .forEach(entry => response.header(`shipments-${entry[0]}`, entry[1]));
           return response;
         })
         .catch(e => errorResponse(h, e, "Failure querying shipments"));
