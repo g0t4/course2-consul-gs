@@ -9,7 +9,7 @@ const config = {
 
   failureMode: false,
 
-  SMTP_PORT: parseInt(process.env.SMTP_PORT, 10) || 25,
+  SMTP_PORT: parseInt(process.env.SMTP_PORT, 10) || 1025, // mailhog defaults to 1025
   // SMTP_HOST can be set to something like "smtp.service.consul"
   SMTP_HOST: process.env.SMTP_HOST || "127.0.0.1",
 
