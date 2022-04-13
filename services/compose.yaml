@@ -10,10 +10,9 @@ services:
   shipments:
     build: ./shipments/src/
     image: weshigbee/consul2-shipments
-    # TODO test - enable shipments to use tracking:
-    # environment:
-    #   MY_SHIPMENTS__TOGGLES__INCLUDETRACKINGINFO: true
-    #   MY_SHIPMENTS__TRACKINGSERVICEURL: http://tracking:8080
+    environment:
+      MY_SHIPMENTS__TOGGLES__INCLUDETRACKINGINFO: true
+      MY_SHIPMENTS__TRACKINGSERVICEURL: http://tracking:8080 # docker SD
     ports:
       - "5000:5000"
   mails:
