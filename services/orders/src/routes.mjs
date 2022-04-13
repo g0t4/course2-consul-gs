@@ -67,7 +67,7 @@ function addRoutes(server) {
     method: "GET",
     path: "/",
     options: { description: "list routes" },
-    handler: (h) =>
+    handler: (request, h) =>
       errorIfFailureMode(h) ||
       `routes: <br/>
 <a href="/orders/report/1">/orders/report/{id}</a> - generate order report (calls shipments service) 
