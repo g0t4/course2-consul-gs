@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
   iputils-ping iputils-arping iputils-tracepath \
   command-not-found \
   procps psmisc \
+  net-tools \
   && rm -rf /var/lib/apt/lists/*
 
 RUN echo ". ~/.bashrc.swiss" >> /root/.bashrc
