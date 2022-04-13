@@ -44,6 +44,7 @@ function addRoutes(server) {
           shipments: shipments.data,
           "shipments-instance": shipments.headers["shipments-instance"],
         })
+        // time permit this can get into tracing, metrics needs - observability + Connect
         .header("shipments-instance", shipments.headers["shipments-instance"]);
     },
   });
