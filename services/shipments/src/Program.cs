@@ -31,6 +31,9 @@ app.Use(async (context, next) =>
   await next(context);
 });
 
+// TODO health checks - stock?
+// https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks
+
 app.MapGet("/simulate/failure", () =>
 {
   Config.Instance.Toggles.IsFailureMode = true;
