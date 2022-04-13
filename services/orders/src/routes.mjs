@@ -67,9 +67,9 @@ function addRoutes(server) {
     method: "GET",
     path: "/",
     options: { description: "list routes" },
-    handler: () => {
-      throwIfFailureMode();
-      return `routes: <br/>
+    handler: (h) =>
+      errorIfFailureMode(h) ||
+      `routes: <br/>
 <a href="/orders/report/1">/orders/report/{id}</a> - generate order report (calls shipments service) 
 <br/>
 <a href="/orders/submit">/orders/submit</a> - sends email notification 
@@ -77,8 +77,7 @@ function addRoutes(server) {
 <a href="/simulate/failure">/simulate/failure</a> - enable Failure Mode 
 <br/>
 <a href="/simulate/resume">/simulate/resume</a> - disable Failure Mode <br/>
-`;
-    },
+`,
   });
 }
 
@@ -93,12 +92,6 @@ function errorResponse(h, e, description) {
       statusCode: 500,
     })
     .code(500);
-}
-
-function throwIfFailureMode() {
-  if (!config.failureMode) return;
-  verbose("request made during failure mode, throwing error...");
-  throw new Error("simulated failure");
 }
 
 function errorIfFailureMode(h) {
