@@ -23,7 +23,7 @@ function addRoutes(server) {
       return errorIfFailureMode(h)
         || await sendOrderedEmail()
             .then(() => h.response("Order submitted, email sent"))
-            .catch((e) => errorResponse(h, e, "Failure sending email"));
+            .catch(e => errorResponse(h, e, "Failure sending email"));
     },
   });
 
@@ -31,16 +31,20 @@ function addRoutes(server) {
     method: "GET",
     path: "/orders/report/{id}",
     options: { description: "calls shipments service" },
-    handler: async (request) => {
+    handler: async (request, h) => {
+
       throwIfFailureMode();
       var orderId = request.params.id;
-      var shipments = await shipmentsClient.getShipmentsForOrder(orderId);
-      return {
-        title: "Order Report",
-        orderId,
-        shipments: shipments.data,
-        "shipments-instance": shipments.headers["shipments-instance"],
-      };
+      var shipments = await shipmentsClient.getShipmentsForOrder(orderId)
+        .catch(e => errorResponse(h, e, "Failure querying shipments"));
+      return h
+        .response({
+          title: "Order Report",
+          orderId,
+          shipments: shipments.data,
+          "shipments-instance": shipments.headers["shipments-instance"],
+        })
+        .header("shipments-instance", shipments.headers["shipments-instance"]);
     },
   });
 
@@ -113,5 +117,7 @@ Handlers:
 - handler parameters:
   - `request`: https://hapi.dev/api#request
   - `h` (response toolkit): https://hapi.dev/api#response-toolkit
-
+- response object:
+  - https://hapi.dev/api/?v=20.2.1#response-object
+  - builder interface
 */
