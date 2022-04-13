@@ -2,17 +2,6 @@ import { config } from "./config.mjs";
 import { info, verbose, error } from "./logging.mjs";
 import { shipmentsClient } from "./shipments.mjs";
 import { sendOrderedEmail } from "./email.mjs";
-function throwIfFailureMode() {
-  if (!config.failureMode) return;
-  verbose("request made during failure mode, throwing error...");
-  throw new Error("simulated failure");
-}
-
-function errorIfFailureMode(h) {
-  if (!config.failureMode) return;
-  verbose("request made during failure mode, throwing error...");
-  return h.response("simulated failure").code(500);
-}
 
 function addRoutes(server) {
   server.route({
@@ -104,6 +93,18 @@ function errorResponse(h, e, description) {
       statusCode: 500,
     })
     .code(500);
+}
+
+function throwIfFailureMode() {
+  if (!config.failureMode) return;
+  verbose("request made during failure mode, throwing error...");
+  throw new Error("simulated failure");
+}
+
+function errorIfFailureMode(h) {
+  if (!config.failureMode) return;
+  verbose("request made during failure mode, throwing error...");
+  return h.response("simulated failure").code(500);
 }
 
 export { addRoutes };
