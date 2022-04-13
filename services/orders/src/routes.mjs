@@ -35,17 +35,19 @@ function addRoutes(server) {
 
       throwIfFailureMode();
       var orderId = request.params.id;
-      var shipments = await shipmentsClient.getShipmentsForOrder(orderId)
+      return await shipmentsClient.getShipmentsForOrder(orderId)
+        .then(shipments => 
+          h.response({
+            title: "Order Report",
+            orderId,
+            shipments: shipments.data,
+            "shipments-instance": shipments.headers["shipments-instance"],
+          })
+          // time permit - tracing, metrics - observability + Connect
+          .header("shipments-instance", shipments.headers["shipments-instance"])
+        )
         .catch(e => errorResponse(h, e, "Failure querying shipments"));
-      return h
-        .response({
-          title: "Order Report",
-          orderId,
-          shipments: shipments.data,
-          "shipments-instance": shipments.headers["shipments-instance"],
-        })
-        // time permit this can get into tracing, metrics needs - observability + Connect
-        .header("shipments-instance", shipments.headers["shipments-instance"]);
+      
     },
   });
 
