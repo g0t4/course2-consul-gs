@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
   curl wget \
   dnsutils \
   iputils-ping iputils-arping iputils-tracepath \
-  command-not-found
+  command-not-found \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN echo ". ~/.bashrc.swiss" >> /root/.bashrc
 COPY dotfiles/.bashrc /root/.bashrc.swiss
