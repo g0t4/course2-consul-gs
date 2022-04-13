@@ -7,3 +7,13 @@ services:
 
 # OR
 # docker container run --rm -it -p 8025:8025 -p 1025:1025 mailhog/mailhog
+
+# NOTE: mailhog can and should be yet another service registered to consul!
+# service {
+#   id = "mailhog1"
+#   name = "smtp"
+#   #? tags = ["fake"]
+#   port: 1025
+# }
+#
+# imagine, another smtp service w/ tags = ["real"]
