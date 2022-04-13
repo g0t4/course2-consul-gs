@@ -21,6 +21,10 @@ A test `SMTP` server.
 docker container run --rm -it --name mh \
   -p 8025:8025 -p 1025:1025 mailhog/mailhog
 
+# open web UI http://localhost:8025
+# messages API:
+curl -s http://localhost:8025/api/v2/messages | jq
+
 # send an email (uses sendmail in container)
 echo "hello world" | docker container exec mh \
   sendmail -S localhost:1025 -f me@me.com you@you.com
