@@ -25,16 +25,16 @@ function addRoutes(server) {
       
       return errorIfFailureMode(h)
         || await shipmentsClient.getShipmentsForOrder(orderId)
-        .then(shipments => 
-          h.response({
+        .then(shipments => {
+          return h.response({
             title: "Order Report",
             orderId,
             shipments: shipments.data,
             "shipments-instance": shipments.headers["shipments-instance"],
           })
           // time permit - tracing, metrics - observability + Connect
-          .header("shipments-instance", shipments.headers["shipments-instance"])
-        )
+          .header("shipments-instance", shipments.headers["shipments-instance"]);
+        })
         .catch(e => errorResponse(h, e, "Failure querying shipments"));
 
     },
