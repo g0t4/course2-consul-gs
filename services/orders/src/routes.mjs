@@ -15,8 +15,9 @@ function addRoutes(server) {
     options: { description: "sends email notification" },
     handler: async (request, h) => {
       throwIfFailureMode();
-      await sendOrderedEmail(); // will throw if promise rejected
-      return "Order submitted, email sent";
+      return await sendOrderedEmail().then(() =>
+        h.response("Order submitted, email sent")
+      ); // will throw if promise rejected
     },
   });
 
