@@ -23,6 +23,8 @@ function logConfig() {
 function setupLogging(server) {
   logConfig();
 
+  // Life Cycle (events): https://hapi.dev/api#request-lifecycle
+
   // log request errors (ie connection failure to shipments service, ie IPv6/localhost)
   server.events.on("request", (request, event, tags) => {
     if (tags.error) {

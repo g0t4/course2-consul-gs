@@ -13,7 +13,7 @@ function addRoutes(server) {
     method: "GET",
     path: "/orders/submit",
     options: { description: "sends email notification" },
-    handler: async () => {
+    handler: async (request, h) => {
       throwIfFailureMode();
       await sendOrderedEmail(); // will throw if promise rejected
       return "Order submitted, email sent";
@@ -80,3 +80,8 @@ function addRoutes(server) {
 }
 
 export { addRoutes };
+
+// hapi APIs: 
+// request: https://hapi.dev/api#request
+// server: https://hapi.dev/api#server
+// h (toolkit): https://hapi.dev/api#h
