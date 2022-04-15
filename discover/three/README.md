@@ -34,16 +34,21 @@ docker container run --rm -it -p 3000:3000 --name orders \
   -e "SHIPMENTS_URL=http://172.17.0.3:5000" \
   weshigbee/consul2-orders
 
+
 ## discovery via Consul DNS
 # consul-dev container 
 docker container run --rm -it --name consul-dev -p 8500:8500 \
   consul agent -dev -dns-port 53 -client 0.0.0.0
+
 # orders service - discovery via consul's DNS
 docker container run --rm -it -p 3000:3000 --name orders \
   -e "SHIPMENTS_URL=http://shipments.service.consul:5000" \
   --dns 172.17.0.4 \
   weshigbee/consul2-orders
+# docker run reference: https://docs.docker.com/engine/reference/run/
+# - host networking: https://docs.docker.com/engine/reference/run/#network-host
 # /etc/resolv.conf: https://man7.org/linux/man-pages/man5/resolv.conf.5.html
+
 
 ## dig (verbose, universal), dog (concise, colorful)
 docker container run --rm -i -t weshigbee/consul2-dog google.com
