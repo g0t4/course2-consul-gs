@@ -1,5 +1,8 @@
 {
   "cSpell.words": [
     "hashicorp"
-  ]
+  ],
+  "files.associations": {
+    "*.hcl": "terraform"
+  }
 }
