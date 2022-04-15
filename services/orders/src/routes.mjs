@@ -68,7 +68,7 @@ function addRoutes(server) {
 
   server.route({
     method: "GET",
-    path: "/httpbin/{path?}",
+    path: "/httpbin/{path*}",
     options: { description: "proxy httpbin.org - to validate DNS recursion" },
     handler: async (request, h) => {
       const path = request.params.path;

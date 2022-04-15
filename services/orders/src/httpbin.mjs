@@ -6,6 +6,8 @@ import { verbose } from "./logging.mjs";
 // - see site for various endpoints that can be proxied, such as:
 //   /httpbin/headers
 //   /httpbin/uuid
+// - multiple segments work too:
+//   /httpbin/anything/foobar
 //
 
 const httpBinClient = {
