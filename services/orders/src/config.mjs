@@ -18,6 +18,8 @@ const config = {
   // 127.0.0.1: "http://127.0.0.1:5000" (careful IPv6/localhost)
   // generic DNS: "http://shipments:5000" - might leverage DNS search domains to form FQDN for DNS resolution, thus introducing another way to parameterize URL
   SHIPMENTS_URL: process.env.SHIPMENTS_URL || "http://127.0.0.1:5000",
+
+  HTTPBIN_URL: process.env.HTTPBIN_URL || "http://httpbin.org"
 };
 
 export { config };

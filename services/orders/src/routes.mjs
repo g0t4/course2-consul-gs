@@ -2,6 +2,7 @@ import { config } from "./config.mjs";
 import { info, verbose, error } from "./logging.mjs";
 import { shipmentsClient } from "./shipments.mjs";
 import { sendOrderedEmail } from "./email.mjs";
+import { httpBinClient } from "./httpbin.mjs";
 
 function addRoutes(server) {
   server.route({
@@ -67,6 +68,24 @@ function addRoutes(server) {
 
   server.route({
     method: "GET",
+    path: "/httpbin/{path?}",
+    options: { description: "proxy httpbin.org - to validate DNS recursion" },
+    handler: async (request, h) => {
+      const path = request.params.path;
+      if (typeof path !== "string" || path.length === 0) {
+        verbose("empty path, redirecting to /httpbin/get");
+        return h.redirect("/httpbin/get");
+      }
+
+      return errorIfFailureMode(h)
+        || await httpBinClient.proxy(path)
+            .then(r => h.response(r.data))
+            .catch(e => errorResponse(h, e, "Failure proxying httpbin.org"));
+    },
+  });
+
+  server.route({
+    method: "GET",
     path: "/",
     options: { description: "list routes" },
     handler: (request, h) =>
@@ -75,6 +94,8 @@ function addRoutes(server) {
 <a href="/orders/report/1">/orders/report/{id}</a> - generate order report (calls shipments service) 
 <br/>
 <a href="/orders/submit">/orders/submit</a> - sends email notification 
+<br/>
+<a href="/httpbin/headers">/httpbin/get</a> - test DNS recursion (via httpbin.org)
 <br/>
 <a href="/simulate/failure">/simulate/failure</a> - enable Failure Mode 
 <br/>
