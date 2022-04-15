@@ -43,10 +43,13 @@ docker container run --rm -it -p 3000:3000 --name orders \
   -e "SHIPMENTS_URL=http://shipments.service.consul:5000" \
   --dns 172.17.0.4 \
   weshigbee/consul2-orders
+# /etc/resolv.conf: https://man7.org/linux/man-pages/man5/resolv.conf.5.html
 
-## dig, dog
+## dig (verbose, universal), dog (concise, colorful)
 docker container run --rm -i -t weshigbee/consul2-dog google.com
 dig google.com
+# https://dns.lookup.dog/
+# https://github.com/ogham/dog
 
 # dog via one-off container
 docker container run --rm -i -t weshigbee/consul2-dog \
