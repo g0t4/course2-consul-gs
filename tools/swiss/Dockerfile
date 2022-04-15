@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
   command-not-found \
   procps psmisc \
   net-tools \
+  lshw \
   && rm -rf /var/lib/apt/lists/*
 
 RUN echo ". ~/.bashrc.swiss" >> /root/.bashrc
