@@ -2,10 +2,10 @@
 
 sessionname="monitor-files"
 
-watch="watch -d -n 1 --no-title"
-curl_order="$watch curl localhost:3000/orders/report/1 --no-progress-meter"
+watch="watch -d -n 1 --no-title --color"
+curl_order="$watch curl 'localhost:3000/orders/report/1 --no-progress-meter | jq -C'"
 curl_order_title="localhost:3000/orders/report/1"
-curl_shipments="$watch curl localhost:5000/shipments --no-progress-meter"
+curl_shipments="$watch 'curl localhost:5000/shipments --no-progress-meter | jq -C'"
 curl_shipments_title="localhost:5000/shipments"
 consul_services="$watch consul catalog services"
 consul_services_title="consul catalog services"
@@ -28,7 +28,7 @@ tmux split-window -p 40 -t 0 -v
 # split top half 50/50 left & right
 tmux split-window -p 50 -t 0 -h
 # split upper right 60/40 top & bottom
-tmux split-window -p 40 -t 1 -v
+tmux split-window -p 30 -t 1 -v
 
 # 0 - upper left - orders service
 tmux select-pane -t 0 -T "$curl_order_title"
