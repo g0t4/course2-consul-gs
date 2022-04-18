@@ -55,3 +55,5 @@ tmux -2 attach-session -d -t $sessionname
 # ctrl+b,? # list key bindings
 # ctrl+b,C # interactive tmux options editing/docs
 # tmux refresh # 'fix' if Cmd+K
+
+# NOTE: font size was set to 24 for this demo - docker compose down / up - destroying/recreating entire environment in seconds!
