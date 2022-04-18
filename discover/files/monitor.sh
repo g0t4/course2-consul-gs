@@ -56,4 +56,6 @@ tmux -2 attach-session -d -t $sessionname
 # ctrl+b,C # interactive tmux options editing/docs
 # tmux refresh # 'fix' if Cmd+K
 
-# NOTE: font size was set to 24 for this demo - docker compose down / up - destroying/recreating entire environment in seconds!
+# NOTE: font size was set to 24 for this demo:
+# - docker compose down / up - destroying/recreating entire environment in seconds! 
+# - Config file describes what is desired. Delegates when & how to consul agent.
