@@ -16,6 +16,7 @@ tmux new-session -d -s $sessionname
 tmux set-option status off             # disable status bar
 tmux set-option pane-border-status top # pane title bars
 tmux set-option pane-border-format "#{pane_title}"
+tmux set-option mouse on
 
 #
 # | 0 |_1_|
