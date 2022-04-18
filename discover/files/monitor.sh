@@ -54,6 +54,7 @@ tmux -2 attach-session -d -t $sessionname
 #   tmux attach-session -t $sessionname
 # ctrl+b,? # list key bindings
 # ctrl+b,C # interactive tmux options editing/docs
+# ctrl+b," # split-window 
 # tmux refresh # 'fix' if Cmd+K
 
 # NOTE: font size was set to 24 for this demo:
