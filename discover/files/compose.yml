@@ -27,6 +27,7 @@ services:
       - 172.18.0.2
     environment:
       SHIPMENTS_URL: http://shipments.service.consul:5000
+      SMTP_HOST: smtp.service.consul
     networks:
       default:
         ipv4_address: 172.18.0.4
