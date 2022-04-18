@@ -32,14 +32,14 @@ services:
       default:
         ipv4_address: 172.18.0.4
   #
-  # mails:
-  #   image: mailhog/mailhog
-  #   ports:
-  #   - "8025:8025"
-  #   # port 1025 = SMTP
-  #   networks:
-  #     default:
-  #       ipv4_address: 172.18.0.6
+  mails:
+    image: mailhog/mailhog
+    ports:
+    - "8025:8025"
+    # port 1025 = SMTP
+    networks:
+      default:
+        ipv4_address: 172.18.0.6
   #
   # run one-off DNS queries:
   #   docker compose run dog shipments.service.consul
