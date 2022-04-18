@@ -52,3 +52,6 @@ tmux -2 attach-session -d -t $sessionname
 # ctrl+b,arrow # move panes
 # ctrl+b,d # detach from session 
 #   tmux attach-session -t $sessionname
+# ctrl+b,? # list key bindings
+# ctrl+b,C # interactive tmux options editing/docs
+# tmux refresh # 'fix' if Cmd+K
