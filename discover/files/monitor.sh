@@ -48,3 +48,6 @@ tmux select-pane -t 3
 tmux -2 attach-session -d -t $sessionname
 
 # https://man7.org/linux/man-pages/man1/tmux.1.html
+# ctrl+b,arrow # move panes
+# ctrl+b,d # detach from session 
+#   tmux attach-session -t $sessionname
