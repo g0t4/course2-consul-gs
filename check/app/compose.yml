@@ -1,0 +1,54 @@
+services:
+  consul-dev:
+    image: consul
+    ports:
+      - "8500:8500"
+    networks:
+      default:
+        ipv4_address: 172.18.0.2
+    volumes:
+      - ./conf:/consul/config
+  shipments:
+    image: weshigbee/consul2-shipments
+    ports:
+      - "5000:5000"
+    networks:
+      default:
+        ipv4_address: 172.18.0.3
+  orders:
+    image: weshigbee/consul2-orders
+    ports:
+      - "3000:3000"
+    dns:
+      - 172.18.0.2
+    environment:
+      SHIPMENTS_URL: http://shipments.service.consul:5000
+      SMTP_HOST: smtp.service.consul
+    networks:
+      default:
+        ipv4_address: 172.18.0.4
+  mails:
+    image: mailhog/mailhog
+    ports:
+    - "8025:8025"
+    # port 1025 = SMTP
+    networks:
+      default:
+        ipv4_address: 172.18.0.6
+  #
+  # run one-off DNS queries:
+  #   docker compose run --rm dog shipments.service.consul
+  dog:
+    image: weshigbee/consul2-dog
+    dns:
+      - 172.18.0.2
+    profiles:
+      - runonly
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: "172.18.0.0/24"
+          ip_range: "172.18.0.0/24"
+          gateway: "172.18.0.1"
