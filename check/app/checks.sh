@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-sessionname="dereg"
+
+# WARNING (NOTE): if watch takes longer to return than timeout of web server (ie when a service instance is not operational but another container is using the SAME IP - then watch will behave seemingly erratically - just make sure the IP you use isn't in the range of assigned addresses and/or in use by other containers that way the request will timeout quickly and watch won't choke up randomly and not really seem 'to work' - ie for ship2 in this demo if it is offline [the container for it] then run dog container can easily use the IP it would have assigned - which also causes collision when you do bring it up.. if running watch with dog DNS queries at same time)... 
+# TLDR: ensure IP addr of service containers aren't in use by other containers
+# TLDR: watch can seemingly 'fail' to be indicative of what's going on if timeouts of webserver are long
+
+sessionname="checks"
 
 watch="watch -d -n 1 --no-title --color "
 
