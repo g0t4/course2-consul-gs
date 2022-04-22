@@ -7,7 +7,7 @@
 
 sessionname="checks"
 
-watch="watch -d -n 1 --no-title --color "
+watch="watch -d -n 2 --no-title --color "
 
 function watch_curl_json(){
   pane=$1
@@ -50,21 +50,21 @@ tmux set-option mouse on
 
 # NOTE: zoom out a bit for this layout to work well (designed for ~32ish lines)
 # split screen into 3 stacked panes
-tmux split-window -l 10 -t 0 -v # split out bottom [10 lines]
-tmux split-window -l 10 -t 0 -v # split out middle [10 lines]
+tmux split-window -l 8 -t 0 -v # split out bottom [10 lines]
+tmux split-window -l 8 -t 0 -v # split out middle [10 lines]
 # leaves top [remainder]
 
 # split top pane into thirds
-tmux split-window -p 33 -t 0 -h # split out top right 33%
-tmux split-window -p 50 -t 0 -h # split out top middle [67%*.50=33.5%]
+tmux split-window -p 40 -t 0 -h # split out top right 33%
+tmux split-window -p 40 -t 0 -h # split out top middle [67%*.50=33.5%]
 # leaves top left [33.5%] 
 
 # split top middle into 2 stack
 tmux split-window -p 50 -t 1 -v # split top middle top and bottom (50%)
 
 # split top right into 3 stack
-tmux split-window -l 4 -t 3 -v
-tmux split-window -l 4 -t 3 -v
+tmux split-window -p 33 -t 3 -v
+tmux split-window -p 50 -t 3 -v
 # 60% is left for left most pane
 
 
