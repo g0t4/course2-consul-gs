@@ -12,6 +12,7 @@ watch="watch -d -n 1 --no-title --color "
 function watch_curl_json(){
   pane=$1
   url=$2
+  title=${3:-$url} # title defaults to url
   cmd="$watch curl '$url --no-progress-meter | jq -C'"
 
   tmux select-pane -t $pane -T "$url"  # title = url
@@ -48,40 +49,51 @@ tmux set-option mouse on
 
 
 # NOTE: zoom out a bit for this layout to work well (designed for ~32ish lines)
+# split screen into 3 stacked panes
 tmux split-window -l 10 -t 0 -v # split out bottom [10 lines]
 tmux split-window -l 10 -t 0 -v # split out middle [10 lines]
 # leaves top [remainder]
 
+# split top pane into thirds
 tmux split-window -p 33 -t 0 -h # split out top right 33%
 tmux split-window -p 50 -t 0 -h # split out top middle [67%*.50=33.5%]
 # leaves top left [33.5%] 
 
-tmux split-window -l 4 -t 2 -v
-tmux split-window -l 4 -t 2 -v
+# split top middle into 2 stack
+tmux split-window -p 50 -t 1 -v # split top middle top and bottom (50%)
+
+# split top right into 3 stack
+tmux split-window -l 4 -t 3 -v
+tmux split-window -l 4 -t 3 -v
 # 60% is left for left most pane
+
 
 # 0 - top left
 watch_curl_json 0 localhost:3000/orders/report/1
 
-# 1 - top middle
-watch_curl_json 1 localhost:5000/shipments
 
-# 2 - top right top
-watch_cmd 2 "consul catalog services"
+# 1 - top middle top
+watch_curl_json 1 localhost:5000/shipments ship1
+# 2 - top middle bottom
+watch_curl_json 2 localhost:5001/shipments ship2
 
-# 3 - top right middle
+
+# 3 - top right top
+watch_cmd 3 "consul catalog services"
+# 4 - top right middle
 dog="dog @172.18.2.20 shipments.service.consul"
-watch_cmd 3 "docker compose run --rm $dog --color=always " "$dog"
-
-# 4 - top right bottom
-dog="dog @172.18.2.20 smtp.service.consul"
 watch_cmd 4 "docker compose run --rm $dog --color=always " "$dog"
+# 5 - top right bottom
+dog="dog @172.18.2.20 smtp.service.consul"
+watch_cmd 5 "docker compose run --rm $dog --color=always " "$dog"
 
-# 5 - middle
-cmd 5 "consul monitor"
 
-# 6 - bottom
-tmux select-pane -t 6 -T "commands"
-tmux select-pane -t 6
+# 6 - middle
+cmd 6 "consul monitor"
+
+
+# 7 - bottom
+tmux select-pane -t 7 -T "commands"
+tmux select-pane -t 7
 
 tmux -2 attach-session -d -t $sessionname
