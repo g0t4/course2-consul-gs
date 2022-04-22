@@ -4,14 +4,14 @@ services:
   consul-dev:
     image: consul
     ports:
-      - "8500:8500" # note: host published
+      - "8500:8500"
     networks:
       default:
         ipv4_address: 172.18.2.20
     volumes:
       - ./conf:/consul/config
 
-  ## shipment instances
+  ## shipment instances (port 5000)
   ship1:
     image: weshigbee/consul2-shipments
     networks:
@@ -28,7 +28,7 @@ services:
   orders:
     image: weshigbee/consul2-orders
     ports:
-      - "3000:3000" # note: host published
+      - "3000:3000"
     dns:
       - 172.18.2.20
     environment:
@@ -39,14 +39,14 @@ services:
   mail1:
     image: mailhog/mailhog
     ports:
-      - "8025:8025" # note: host published
+      - "8025:8025"
     networks:
       default:
         ipv4_address: 172.18.2.60
   mail2:
     image: mailhog/mailhog
     ports:
-      - "8026:8025" # note: host published
+      - "8026:8025"
     networks:
       default:
         ipv4_address: 172.18.2.61
