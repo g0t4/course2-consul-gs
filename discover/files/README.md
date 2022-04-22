@@ -1,3 +1,21 @@
+## cleanup
+
+```bash
+
+# remove orphans will nuke any lingering one-off dog containers
+docker compose down --remove-orphans
+# check containers:
+docker compose ps -a # this project alone
+docker container ps -a # all on host
+
+# tmux cleanup
+tmux list-sessions
+tmux kill-sessions -a # kill all sessions
+# or target one specifically
+tmux kill-session -t monitor
+
+```
+
 ## config docs
 
 - `hcl` = `Hashicorp Configuration Language`
