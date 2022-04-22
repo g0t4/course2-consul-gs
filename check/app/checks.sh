@@ -15,7 +15,7 @@ function watch_curl_json(){
   title=${3:-$url} # title defaults to url
   cmd="$watch curl '$url --no-progress-meter | jq -C'"
 
-  tmux select-pane -t $pane -T "$url"  # title = url
+  tmux select-pane -t $pane -T "$title"
   tmux send-keys -t $pane C-l "$cmd" C-m         # run cmd
 }
 
