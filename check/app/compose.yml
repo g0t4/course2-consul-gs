@@ -1,54 +1,70 @@
 services:
+
+  ## consul agent(s)
   consul-dev:
     image: consul
     ports:
-      - "8500:8500"
+      - "8500:8500" # note: host published
     networks:
       default:
         ipv4_address: 172.18.2.20
     volumes:
       - ./conf:/consul/config
+
+  ## shipment instances
   ship1:
     image: weshigbee/consul2-shipments
-    ports:
-      - "5000:5000"
     networks:
       default:
         ipv4_address: 172.18.2.30
-  # INITIALLY no ship2 so we don't up it - keep commented out OR use profiles!
-  # ship2:
-  #   image: weshigbee/consul2-shipments
-  #   ports:
-  #     - "5000:5000"
-  #   networks:
-  #     default:
-  #       ipv4_address: 172.18.2.31
+  ship2:
+    image: weshigbee/consul2-shipments
+    networks:
+      default:
+        ipv4_address: 172.18.2.31
+    profiles: [ "manual1" ]
+
+  ## orders instance
   orders:
     image: weshigbee/consul2-orders
     ports:
-      - "3000:3000"
+      - "3000:3000" # note: host published
     dns:
       - 172.18.2.20
     environment:
       SHIPMENTS_URL: http://shipments.service.consul:5000
       SMTP_HOST: smtp.service.consul
-  mails:
+
+  ## mail instances
+  mail1:
     image: mailhog/mailhog
     ports:
-    - "8025:8025"
-    # port 1025 = SMTP
+      - "8025:8025" # note: host published
     networks:
       default:
         ipv4_address: 172.18.2.60
-  #
-  # run one-off DNS queries:
-  #   docker compose run --rm dog shipments.service.consul
+  mail2:
+    image: mailhog/mailhog
+    ports:
+      - "8026:8025" # note: host published
+    networks:
+      default:
+        ipv4_address: 172.18.2.61
+    profiles: [ "manual2" ]
+
+  ## one-offs
   dog:
     image: weshigbee/consul2-dog
     dns:
       - 172.18.2.20
-    profiles:
-      - runonly
+    profiles: [ "oneoff" ]
+    # docker compose run --rm dog shipments.service.consul
+  swiss:
+    image: weshigbee/consul2-swiss
+    dns:
+      - 172.18.2.20
+    profiles: [ "oneoff" ]
+    # docker compose run --rm swiss curl --no-progress-meter 172.18.2.30:5000/shipments | jq
 
 networks:
   default:
@@ -56,4 +72,4 @@ networks:
       config:
         - subnet: "172.18.0.0/16"
           gateway: "172.18.0.1"
-          # ip_range: implicitly now 0.* and thus moved static IPs higher to avoid likely collision
+          # static IPs now in 172.18.2.0/24 network to avoid collision
