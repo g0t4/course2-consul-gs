@@ -5,22 +5,30 @@ services:
       - "8500:8500"
     networks:
       default:
-        ipv4_address: 172.18.0.2
+        ipv4_address: 172.18.2.20
     volumes:
       - ./conf:/consul/config
-  shipments:
+  ship1:
     image: weshigbee/consul2-shipments
     ports:
       - "5000:5000"
     networks:
       default:
-        ipv4_address: 172.18.0.3
+        ipv4_address: 172.18.2.30
+  # INITIALLY no ship2 so we don't up it - keep commented out OR use profiles!
+  # ship2:
+  #   image: weshigbee/consul2-shipments
+  #   ports:
+  #     - "5000:5000"
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.18.2.31
   orders:
     image: weshigbee/consul2-orders
     ports:
       - "3000:3000"
     dns:
-      - 172.18.0.2
+      - 172.18.2.20
     environment:
       SHIPMENTS_URL: http://shipments.service.consul:5000
       SMTP_HOST: smtp.service.consul
@@ -34,14 +42,14 @@ services:
     # port 1025 = SMTP
     networks:
       default:
-        ipv4_address: 172.18.0.6
+        ipv4_address: 172.18.2.60
   #
   # run one-off DNS queries:
   #   docker compose run --rm dog shipments.service.consul
   dog:
     image: weshigbee/consul2-dog
     dns:
-      - 172.18.0.2
+      - 172.18.2.20
     profiles:
       - runonly
 
@@ -49,6 +57,6 @@ networks:
   default:
     ipam:
       config:
-        - subnet: "172.18.0.0/24"
-          ip_range: "172.18.0.0/24"
+        - subnet: "172.18.0.0/16"
           gateway: "172.18.0.1"
+          # ip_range: implicitly now 0.* and thus moved static IPs higher to avoid likely collision

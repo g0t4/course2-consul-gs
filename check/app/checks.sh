@@ -70,11 +70,11 @@ watch_curl_json 1 localhost:5000/shipments
 watch_cmd 2 "consul catalog services"
 
 # 3 - top right middle
-dog="dog @172.18.0.2 shipments.service.consul"
+dog="dog @172.18.2.20 shipments.service.consul"
 watch_cmd 3 "docker compose run --rm $dog --color=always " "$dog"
 
 # 4 - top right bottom
-dog="dog @172.18.0.2 smtp.service.consul"
+dog="dog @172.18.2.20 smtp.service.consul"
 watch_cmd 4 "docker compose run --rm $dog --color=always " "$dog"
 
 # 5 - middle
