@@ -15,14 +15,14 @@ services:
   ship1:
     image: weshigbee/consul2-shipments
     ports:
-      - 5000:5000 # only for toggling via local browser
+      - 5000:5000
     networks:
       default:
         ipv4_address: 172.18.2.30
   ship2:
     image: weshigbee/consul2-shipments
     ports:
-      - 5001:5000 # only for toggling via local browser
+      - 5001:5000
     networks:
       default:
         ipv4_address: 172.18.2.31
