@@ -23,7 +23,7 @@ function watch_cmd(){
   pane=$1
   _cmd="$2" # assume quoted
   title="${3:-$_cmd}"
-  cmd="$watch $_cmd"
+  cmd="$watch '$_cmd'"
 
   tmux select-pane -t $pane -T "$title"
   tmux send-keys -t $pane C-l "$cmd" C-m
@@ -73,7 +73,7 @@ watch_curl_json 0 localhost:3000/orders/report/1
 
 
 # 1 - top middle top
-watch_curl_json 1 localhost:5000/shipments ship1
+watch_cmd 1 "docker compose exec ship1 curl --no-progress-meter localhost:5000/shipments | jq -C" ship1
 # 2 - top middle bottom
 watch_curl_json 2 localhost:5001/shipments ship2
 
