@@ -74,11 +74,11 @@ watch_cmd 0 "curl --no-progress-meter localhost:3000/orders/submit" "localhost:3
 
 # 1 - top middle top
 # watch_curl_json 1 localhost:5000/shipments ship1
-watch_cmd 1 '"curl --no-progress-meter localhost:8025/api/v1/messages | jq -r length"' 'mail1 messages' # smtp
+watch_cmd 1 '"curl --no-progress-meter localhost:8025/api/v1/messages | jq -r length"' 'mail1 # messages' # smtp
 
 # 2 - top middle bottom
 # watch_curl_json 2 localhost:5001/shipments ship2
-watch_cmd 2 '"curl --no-progress-meter localhost:8026/api/v1/messages | jq -r length"' 'mail2 messages' # smtp
+watch_cmd 2 '"curl --no-progress-meter localhost:8026/api/v1/messages | jq -r length"' 'mail2 # messages' # smtp
 
 # 3 - top right top
 watch_cmd 3 "consul catalog services"
