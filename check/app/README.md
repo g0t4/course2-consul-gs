@@ -1,3 +1,8 @@
+## mailhog
+
+- Delete all messages: 
+  - `curl 'http://localhost:8025/api/v1/messages' -X 'DELETE'`
+
 ## notes
 
 Benefits of using `"one-off"` containers via `docker compose run`:
