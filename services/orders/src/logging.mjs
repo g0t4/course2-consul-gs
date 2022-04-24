@@ -1,16 +1,16 @@
 import { config } from "./config.mjs";
 
-function verbose(message) {
+function verbose(...message) {
   if (!config.VERBOSE_LOGGING) return;
-  console.log("[VERBOSE] " + message);
+  console.log("[VERBOSE]", ...message);
 }
 
-function error(error, message) {
-  console.error("[ERROR] " + message, error);
+function error(error, ...message) {
+  console.error("[ERROR]", ...message, error);
 }
 
-function info(message) {
-  console.log("[INFO] " + message);
+function info(...message) {
+  console.log("[INFO]", ...message);
 }
 
 function logConfig() {
