@@ -25,6 +25,7 @@ console.log(`resolve('${host}')`, await r.resolve(host));
 const SRV_records = await r.resolveSrv(host);
 console.log(`resolveSrv('${host}')`, SRV_records);
 if (SRV_records.length) {
+  // yes I can combine both SRV and A/AAAA lookups, but this is fine for my demo:
   const firstRecord = SRV_records[0];
   const instancePort = firstRecord.port;
   const instanceHost = firstRecord.name;
