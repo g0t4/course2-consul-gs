@@ -69,14 +69,16 @@ tmux split-window -p 50 -t 3 -v
 
 
 # 0 - top left (uncomment one based on shipments/smtp service checks demo)
-watch_curl_json 0 localhost:3000/orders/report/1
-# watch_cmd 0 "curl --no-progress-meter localhost:3000/orders/submit" "localhost:3000/orders/submit"
+# watch_curl_json 0 localhost:3000/orders/report/1
+watch_cmd 0 "curl --no-progress-meter localhost:3000/orders/submit" "localhost:3000/orders/submit"
 
 # 1 - top middle top
-watch_curl_json 1 localhost:5000/shipments ship1
-# 2 - top middle bottom
-watch_curl_json 2 localhost:5001/shipments ship2
+# watch_curl_json 1 localhost:5000/shipments ship1
+watch_cmd 1 '"curl --no-progress-meter localhost:8025/api/v1/messages | jq -r ''.[].Raw.From''"' 'mail1 messages'
 
+# 2 - top middle bottom
+# watch_curl_json 2 localhost:5001/shipments ship2
+watch_cmd 2 '"curl --no-progress-meter localhost:8026/api/v1/messages | jq -r ''.[].Raw.From''"' 'mail2 messages'
 
 # 3 - top right top
 watch_cmd 3 "consul catalog services"
