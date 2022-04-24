@@ -29,6 +29,14 @@ export { sendOrderedEmail };
 
 /* 
 
+node's promise-based DNS resolver:
+- https://nodejs.org/dist/latest-v18.x/docs/api/dns.html#dns-promises-api
+- use dns.lookup instead? a more broadly applicable example?
+
+consider resolve SRV sample?
+- to resolve IP and port for SMTP service
+- https://nodejs.org/dist/latest-v18.x/docs/api/dns.html#dnspromisesresolvesrvhostname
+
 Nodemailer:
 - https://nodemailer.com
 
