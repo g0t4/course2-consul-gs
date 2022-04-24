@@ -2,20 +2,30 @@ import { Resolver } from "node:dns/promises";
 import { config } from "./config.mjs";
 import { verbose } from "./logging.mjs";
 
-function resolve(host) {
+function resolve(host, dnsServer) {
   const r = new Resolver();
+  // if provided, set DNS server
+  if (dnsServer && dnsServer !== "") {
+    r.setServers([dnsServer]);
+  }
   verbose("resolver::getServers", r.getServers());
   verbose("resolver::host", host);
   return r.resolve(host).then((records) => {
     verbose("resolver::records", records);
-    return { address: records[0], port: config.SMTP_PORT }; // only use first record
+    // given consul randomizes results we can just take the first one and get a degree of load balancing
+    const firstRecord = records[0];
+    const result = { address: firstRecord, port: config.SMTP_PORT };
+    verbose("resolver::result", result);
+    return result; // only use first record
   });
 }
 
 // test directly with:
 //   LOG_LEVEL=verbose node orders/src/resolver.mjs
-resolve("google.com").then((instance) => console.log(instance));
-
+// resolve("google.com");
+// these two examples need consul DNS setup:
+// resolve("smtp.service.consul");
+// resolve("shipments.service.consul");
 export { resolve };
 
 // const SRV_records = await r.resolveSrv(host);
