@@ -26,8 +26,16 @@ const SRV_records = await r.resolveSrv(host);
 console.log(`resolveSrv('${host}')`, SRV_records);
 if (SRV_records.length) {
   const firstRecord = SRV_records[0];
-  const port = firstRecord.port;
-  const host = firstRecord.name;
+  const instancePort = firstRecord.port;
+  const instanceHost = firstRecord.name;
+
+  // important to resolve host returned in SRV record b/c each service instance is tied to a port and IP and the port can vary too so can't just use resolve on smtp.service.consul, have to resolve host returned with SRV record
+  const instanceAddresses = await r.resolve(instanceHost);
+  console.log(`resolve('${instanceHost})`, instanceAddresses);
+  const instanceAddress = instanceAddresses[0];
+  console.log(
+    `SRV leads to instance port ${instancePort} @ ${instanceAddress}`
+  );
 }
 
 // NOTE: DNS queries are non-deterministic
