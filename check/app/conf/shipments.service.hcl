@@ -9,3 +9,5 @@ service {
   address = "10.0.1.32"
   port = 5000
 }
+
+# data_dir = "/consul/data"
