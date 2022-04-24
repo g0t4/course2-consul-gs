@@ -1,4 +1,8 @@
 // This is a TEST script to try out the nodejs DNS APIs
+/* run consul on localhost:53 (tcp & udp), add compose ports:
+- "53:53/tcp"
+- "53:53/udp"
+*/
 
 import { Resolver, lookup } from "node:dns/promises";
 
