@@ -10,6 +10,12 @@ services {
   name = "shipments"
   address = "10.0.1.32"
   port = 5000
+
+  check {
+    name = "a first check"
+    http = "http://10.0.1.32:5000/"
+    interval = "10s"
+  }
 }
 
 
