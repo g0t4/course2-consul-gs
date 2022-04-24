@@ -1,18 +1,14 @@
 import { Resolver } from "dns/promises";
 import nodemailer from "nodemailer";
 import { config } from "./config.mjs";
-// https://nodemailer.com
-
-// use case for tags - testing tag for a fake smtp service instance?
 
 function sendOrderedEmail() {
+  // TLDR: resolving directly to bypass issue in nodemailer ( see below )
   const resolver = new Resolver();
-  // nodemailer isn't re-resolving DNS at record expiration (cursory inspection suggests it is linked to changes to handle multiple DNS record responses and rotating through the list of results and inadvertently caching when multi records for lifetime of app)
-  // TLDR: resolving directly to bypass issue in nodemailer
   return resolver.resolve(config.SMTP_HOST).then((records) => {
-    const firstRecord = records[0]; 
-    // tested: no records, promise is rejected (pre-condition - always array w/ 1+ records)
-    // tested: 1 record is still wrapped in array (as per docs)
+    const firstRecord = records[0];
+    // tested: no records => promise is rejected (pre-condition - always array w/ 1+ records)
+    // tested: single record is also wrapped in array (as per docs)
     const transporter = nodemailer.createTransport({
       pool: false,
       host: firstRecord,
@@ -30,3 +26,24 @@ function sendOrderedEmail() {
 }
 
 export { sendOrderedEmail };
+
+/* 
+
+Nodemailer:
+- https://nodemailer.com
+
+Notes about nodemailer dns caching issues:
+- nodemailer isn't re-resolving DNS at record expiration
+  - cursory inspection - uses hard coded TTL of 5 minutes:
+  - https://github.com/nodemailer/nodemailer/blob/e8b2db3d081bf7307d6382b97d2b5dc4b7a8fe05/lib/shared/index.js#L127
+  - https://github.com/nodemailer/nodemailer/blob/e8b2db3d081bf7307d6382b97d2b5dc4b7a8fe05/lib/shared/index.js#L161
+  - https://github.com/nodemailer/nodemailer/blob/e8b2db3d081bf7307d6382b97d2b5dc4b7a8fe05/lib/shared/index.js#L205
+
+- also, release 6.7.0 changed handling of responses w/ multiple DNS records
+  - https://github.com/nodemailer/nodemailer/blob/master/CHANGELOG.md#670-2021-10-11
+  - loops over the multiple responses instead of just caching (and using) the first record
+  - this explanation confirms cursory inspection that shows hard coded caching that doesn't respect DNS record TTL (doesn't even factor it in)
+
+- TLDR: using DNS resolver directly to bypass hard coded caching in nodemailer
+
+*/
