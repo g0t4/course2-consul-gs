@@ -1,5 +1,5 @@
-services {
+service {
   name    = "shipments"
-  address = "172.18.2.30"
+  address = "10.0.1.30"
   port    = 5000
 }

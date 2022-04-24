@@ -7,7 +7,7 @@ services:
       - "8500:8500"
     networks:
       default:
-        ipv4_address: 172.18.2.20
+        ipv4_address: 10.0.1.20
     volumes:
       - ./conf:/consul/config
 
@@ -18,14 +18,14 @@ services:
       - 5000:5000
     networks:
       default:
-        ipv4_address: 172.18.2.30
+        ipv4_address: 10.0.1.30
   ship2:
     image: weshigbee/consul2-shipments
     ports:
       - 5001:5000
     networks:
       default:
-        ipv4_address: 172.18.2.31
+        ipv4_address: 10.0.1.31
     profiles: [ "manual1" ]
 
   ## orders instance
@@ -34,7 +34,7 @@ services:
     ports:
       - "3000:3000"
     dns:
-      - 172.18.2.20
+      - 10.0.1.20
     environment:
       SHIPMENTS_URL: http://shipments.service.consul:5000
       SMTP_HOST: smtp.service.consul
@@ -46,34 +46,34 @@ services:
       - "8025:8025"
     networks:
       default:
-        ipv4_address: 172.18.2.60
+        ipv4_address: 10.0.1.60
   mail2:
     image: mailhog/mailhog
     ports:
       - "8026:8025"
     networks:
       default:
-        ipv4_address: 172.18.2.61
+        ipv4_address: 10.0.1.61
     profiles: [ "manual2" ]
 
   ## one-offs
   dog:
     image: weshigbee/consul2-dog
     dns:
-      - 172.18.2.20
+      - 10.0.1.20
     profiles: [ "oneoff" ]
     # docker compose run --rm dog shipments.service.consul
   swiss:
     image: weshigbee/consul2-swiss
     dns:
-      - 172.18.2.20
+      - 10.0.1.20
     profiles: [ "oneoff" ]
-    # docker compose run --rm swiss curl --no-progress-meter 172.18.2.30:5000/shipments | jq
+    # docker compose run --rm swiss curl --no-progress-meter 10.0.1.30:5000/shipments | jq
 
 networks:
   default:
     ipam:
       config:
-        - subnet: "172.18.0.0/16"
-          gateway: "172.18.0.1"
-          # static IPs now in 172.18.2.0/24 network to avoid collision
+        - subnet: "10.0.0.0/16"
+          gateway: "10.0.0.1"
+          # static IPs now in 10.0.1.0/24 network to avoid collision
