@@ -1,3 +1,5 @@
+// This is a TEST script to try out the nodejs DNS APIs
+
 import { Resolver, lookup } from "node:dns/promises";
 
 // ARGS:
