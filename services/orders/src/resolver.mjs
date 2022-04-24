@@ -23,9 +23,9 @@ function resolve(host, dnsServer) {
 // test directly with:
 //   LOG_LEVEL=verbose node orders/src/resolver.mjs
 // resolve("google.com");
-// these two examples need consul DNS setup:
-// resolve("smtp.service.consul");
-// resolve("shipments.service.consul");
+// these two examples need consul DNS setup (set as second arg - ok to provide non-standard port too)
+resolve("smtp.service.consul", "127.0.0.1:8600");
+resolve("shipments.service.consul", "127.0.0.1:8600");
 export { resolve };
 
 // const SRV_records = await r.resolveSrv(host);
