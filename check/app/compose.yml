@@ -18,14 +18,14 @@ services:
       - 5000:5000
     networks:
       default:
-        ipv4_address: 10.0.1.30
+        ipv4_address: 10.0.1.31
   ship2:
     image: weshigbee/consul2-shipments
     ports:
       - 5001:5000
     networks:
       default:
-        ipv4_address: 10.0.1.31
+        ipv4_address: 10.0.1.32
     profiles: [ "manual1" ]
 
   ## orders instance
@@ -46,14 +46,14 @@ services:
       - "8025:8025"
     networks:
       default:
-        ipv4_address: 10.0.1.60
+        ipv4_address: 10.0.1.61
   mail2:
     image: mailhog/mailhog
     ports:
       - "8026:8025"
     networks:
       default:
-        ipv4_address: 10.0.1.61
+        ipv4_address: 10.0.1.62
     profiles: [ "manual2" ]
 
   ## one-offs
