@@ -1,5 +1,8 @@
 import { Resolver, lookup } from "node:dns/promises";
 
+// ARGS:
+// node test/node-dns.mjs smtp.service.consul 127.0.0.1
+// - assumes consul DNS bound to localhost:53 (tcp and udp)
 const host = process.argv[2] || "google.com";
 const dnsServer = process.argv[3];
 
@@ -10,16 +13,16 @@ if (dnsServer && dnsServer !== "") {
 console.log("getServers", r.getServers());
 
 console.log(`resolve('${host}')`, await r.resolve(host));
+// resolve ANY fails with consul DNS:
 // console.log(`resolveAny('${host}')`, await r.resolveAny(host));
 
 // https://nodejs.org/dist/latest-v18.x/docs/api/dns.html#dnspromiseslookuphostname-options
-
 // console.log(`lookup('${host}')`, await lookup(host));
 // ok not going to use lookup as Resolver also works with /etc/hosts entries, docs make it sound like only lookup supports that but maybe I misread them.
 
 // ask for SRV directly, works for shipments.service.consul but not smtp.service.consul
 // const rr = await r.resolve(host, "SRV");
-// console.log('rr', rr);
+// console.log('SRV rr', rr);
 // process.exit();
 
 const SRV_records = await r.resolveSrv(host);
