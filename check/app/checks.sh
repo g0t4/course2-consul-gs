@@ -61,17 +61,18 @@ tmux split-window -p 33 -t 3 -v
 tmux split-window -p 50 -t 3 -v
 # 60% is left for left most pane
 
-# 0 - top left, uncomment one:
-watch_curl_json 0 localhost:3000/orders/report/1 # shipments
-# watch_cmd 0 "curl --no-progress-meter localhost:3000/orders/submit" "localhost:3000/orders/submit" # smtp
-
-# 1 - top middle top, uncomment one:
-watch_curl_json 1 localhost:5000/shipments ship1 # shipments
-# watch_cmd 1 '"curl --no-progress-meter localhost:8025/api/v1/messages | jq -r length"' 'mail1 # messages' # smtp
-
-# 2 - top middle bottom, uncomment one:
-watch_curl_json 2 localhost:5001/shipments ship2 # shipments
-# watch_cmd 2 '"curl --no-progress-meter localhost:8026/api/v1/messages | jq -r length"' 'mail2 # messages' # smtp
+# 0 - top left
+# 1 - top middle top
+# 2 - top middle bottom
+if [[ "$TMUX_LAYOUT" != "smtp" ]]; then
+  watch_curl_json 0 localhost:3000/orders/report/1
+  watch_curl_json 1 localhost:5000/shipments ship1
+  watch_curl_json 2 localhost:5001/shipments ship2
+else
+  watch_cmd 0 "curl --no-progress-meter localhost:3000/orders/submit" "localhost:3000/orders/submit"
+  watch_cmd 1 '"curl --no-progress-meter localhost:8025/api/v1/messages | jq -r length"' 'mail1 # messages'
+  watch_cmd 2 '"curl --no-progress-meter localhost:8026/api/v1/messages | jq -r length"' 'mail2 # messages'
+fi
 
 # 3 - top right top
 watch_cmd 3 "consul catalog services"
