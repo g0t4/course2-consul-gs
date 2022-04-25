@@ -1,53 +1,58 @@
 import { Resolver } from "node:dns/promises";
-import { config } from "./config.mjs";
 import { verbose } from "./logging.mjs";
 import net from "node:net";
-import { exit } from "node:process";
+
 /**
  * Discover a service instance
- * @param {*} host - i.e. smtp.service.consul or google.com
- * @param {*} dnsServer - optional - IP or IP:PORT
+ * @param {string} host - i.e. smtp.service.consul or google.com
+ * @param {string} defaultPort
+ * @param {string} dnsServer - optional - IP or IP:PORT
  * @returns promise<ServiceInstance>
  */
 async function getServiceInstance(host, defaultPort, dnsServer) {
-  verbose("resolver::host", host);
+  verbose("resolver::args", { host, defaultPort, dnsServer });
 
   // FIRST - if host is an IP => no lookups to perform
   if (net.isIP(host)) {
     var instance = { address: host, port: defaultPort };
     verbose("resolver::IP::instance", instance);
-    return Promise.resolve(instance);
+    return instance;
   }
 
-  const r = new Resolver();
+  const resolver = new Resolver();
   if (dnsServer && dnsServer !== "") {
-    r.setServers([dnsServer]);
+    resolver.setServers([dnsServer]);
   }
-  verbose("resolver::getServers", r.getServers());
+  verbose("resolver::getServers", resolver.getServers());
 
-  // SECOND, check for an SRV record (port + address)
-  const SRV_records = await r.resolveSrv(host).catch((e) => {
-    verbose("resolver::resolveSrv failed, skipping SRV records check", e);
+  // SECOND, check for an SRV record (resolve port & address)
+  const SRV_records = await resolver.resolveSrv(host).catch((e) => {
+    verbose("resolver::resolveSrv failed, assuming no SRV records...", e);
     return [];
   });
   verbose("resolver::SRV_records", SRV_records);
   if (SRV_records.length) {
     const firstRecord = SRV_records[0];
-    const instance = { port: firstRecord.port };
-    const instanceHost = firstRecord.name;
+    const instance = {
+      port: firstRecord.port,
+      host: firstRecord.name,
+    };
 
-    // IMPORTANT - must resolve host returned in SRV record, each instance can have a differnet port
-    const instanceAddresses = await r.resolve(instanceHost); // let throw if any failure b/c if SRV records exist then I want to use those and if this fails in the second half of that lookup then can't recover from the error
+    // IMPORTANT - must resolve host returned in SRV record, b/c each instance can have a differnet port
+    // TECHNICALLY - should be able to get both SRV + A/AAAA records in SRV query, but this works too
+    const instanceAddresses = await resolver.resolve(instance.host);
+    // let throw if any failure b/c if SRV records exist + lookup fails then that is a non-recoverable error
     verbose("resolver::SRV::instanceAddresses", instanceAddresses);
+
     instance.address = instanceAddresses[0];
     verbose("resolver::SRV::instance", instance);
-    return Promise.resolve(instance);
+    return instance;
   }
 
-  // LAST - resolve host + default port
-  return r.resolve(host).then((records) => {
-    verbose("resolver::records", records);
-    // given consul randomizes results we can just take the first one and get a degree of "load balancing"
+  // LAST - resolve host only, use default port
+  return resolver.resolve(host).then((records) => {
+    verbose("resolver::hostonly::records", records);
+    // consul randomizes DNS results, take first result each time to 'load balance' across service instances
     const firstRecord = records[0];
     const instance = { address: firstRecord, port: defaultPort };
     verbose("resolver::hostonly::instance", instance);
@@ -55,26 +60,27 @@ async function getServiceInstance(host, defaultPort, dnsServer) {
   });
 }
 
-// test directly with:
-//   LOG_LEVEL=verbose node orders/src/discovery.mjs
-// getServiceInstance("google.com", config.SMTP_PORT);
-// these two examples need consul DNS setup (set as second arg - ok to provide non-standard port too)
+/* test directly with:
+  
+  LOG_LEVEL=verbose node orders/src/discovery.mjs
 
-// getServiceInstance(
-//   "shipments.service.consul",
-//   config.SMTP_PORT,
-//   "127.0.0.1:8600"
-// );
-//getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
+  # need consul DNS setup @127.0.0.1 port 8600
+  # uncomment this line:
+  getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
+  # or, shipments.service.consul
+
+*/
+
 export { getServiceInstance };
 
 /* 
 
-NOTE: alternative - don't point system level resolver (/etc/resolv.conf) to CONSUL DNS
-- call r.setServers([config.CONSUL_DNS_IP]) above
-- add this to config.mjs `config.CONSUL_DNS_IP = process.env.CONSUL_DNS_IP` 
-- then, set env var for orders service
-  - thus passing in the CONSUL_DNS_IP
-  - think of this as using DNS as an API
+NOTE: alternative - not implemented currently:
+  - don't point system level resolver (/etc/resolv.conf) to CONSUL DNS
+  - call r.setServers([config.CONSUL_DNS_IP]) above
+  - add this to config.mjs `config.CONSUL_DNS_IP = process.env.CONSUL_DNS_IP` 
+  - then, set env var for orders service
+    - thus passing in the CONSUL_DNS_IP
+    - think of this as using DNS as an API
 
 */
