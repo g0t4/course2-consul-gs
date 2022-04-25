@@ -9,10 +9,9 @@ import net from "node:net";
  * @returns
  *   rejected promise w/ ENOTFOUND if resolver fails
  */
-function resolve(host, defaultPort, dnsServer) {
+function getServiceInstance(host, defaultPort, dnsServer) {
   if (net.isIP(host)) {
-    // if host is an IP address then there are no lookups to perform
-    // - also use configuration's SMTP_PORT
+    // if host is an IP then there are no lookups to perform
     return Promise.resolve({ address: host, port: defaultPort });
   }
   const r = new Resolver();
@@ -33,11 +32,11 @@ function resolve(host, defaultPort, dnsServer) {
 
 // test directly with:
 //   LOG_LEVEL=verbose node orders/src/resolver.mjs
-// resolve("google.com", config.SMTP_PORT);
+// getServiceInstance("google.com", config.SMTP_PORT);
 // these two examples need consul DNS setup (set as second arg - ok to provide non-standard port too)
-//resolve("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
-resolve("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
-export { resolve };
+//getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
+getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
+export { getServiceInstance };
 
 // const SRV_records = await r.resolveSrv(host);
 // console.log(`resolveSrv('${host}')`, SRV_records);
