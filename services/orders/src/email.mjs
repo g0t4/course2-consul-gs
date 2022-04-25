@@ -1,6 +1,7 @@
 import { Resolver } from "dns/promises";
 import nodemailer from "nodemailer";
 import { config } from "./config.mjs";
+import { verbose } from "./logging.mjs";
 
 async function resolveInstance(host) {
   const resolver = new Resolver();
@@ -9,12 +10,14 @@ async function resolveInstance(host) {
   // tested: single record is also wrapped in array (as per docs)
 
   const firstRecord = records[0];
-  return { address: firstRecord, port: config.SMTP_PORT };
+  const instance = { address: firstRecord, port: config.SMTP_PORT };
+  verbose("resolveInstance::", instance);
+  return instance;
 }
 
 function sendOrderedEmail() {
   // TLDR: resolving directly to bypass issue in nodemailer ( see below )
-  return resolveInstance().then((instance) => {
+  return resolveInstance(config.SMTP_HOST).then((instance) => {
     const transporter = nodemailer.createTransport({
       pool: false,
       host: instance.address,
