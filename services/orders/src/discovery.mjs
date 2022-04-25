@@ -31,7 +31,7 @@ function getServiceInstance(host, defaultPort, dnsServer) {
 }
 
 // test directly with:
-//   LOG_LEVEL=verbose node orders/src/resolver.mjs
+//   LOG_LEVEL=verbose node orders/src/discovery.mjs
 // getServiceInstance("google.com", config.SMTP_PORT);
 // these two examples need consul DNS setup (set as second arg - ok to provide non-standard port too)
 //getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
