@@ -37,7 +37,7 @@ async function getServiceInstance(host, defaultPort, dnsServer) {
     const instanceHost = firstRecord.name;
 
     // IMPORTANT - must resolve host returned in SRV record, each instance can have a differnet port
-    const instanceAddresses = await r.resolve(instanceHost);
+    const instanceAddresses = await r.resolve(instanceHost); // let throw if any failure b/c if SRV records exist then I want to use those and if this fails in the second half of that lookup then can't recover from the error
     verbose("resolver::SRV::instanceAddresses", instanceAddresses);
     instance.address = instanceAddresses[0];
     verbose("resolver::SRV::instance", instance);
