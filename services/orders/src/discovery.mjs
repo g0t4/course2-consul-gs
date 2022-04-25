@@ -2,6 +2,7 @@ import { Resolver } from "node:dns/promises";
 import { config } from "./config.mjs";
 import { verbose } from "./logging.mjs";
 import net from "node:net";
+import { exit } from "node:process";
 /**
  * Discover a service instance
  * @param {*} host - i.e. smtp.service.consul or google.com
@@ -25,7 +26,10 @@ async function getServiceInstance(host, defaultPort, dnsServer) {
   verbose("resolver::getServers", r.getServers());
 
   // SECOND, check for an SRV record (port + address)
-  const SRV_records = await r.resolveSrv(host);
+  const SRV_records = await r.resolveSrv(host).catch((e) => {
+    verbose("resolver::resolveSrv failed, skipping SRV records check", e);
+    return [];
+  });
   verbose("resolver::SRV_records", SRV_records);
   if (SRV_records.length) {
     const firstRecord = SRV_records[0];
@@ -55,8 +59,14 @@ async function getServiceInstance(host, defaultPort, dnsServer) {
 //   LOG_LEVEL=verbose node orders/src/discovery.mjs
 // getServiceInstance("google.com", config.SMTP_PORT);
 // these two examples need consul DNS setup (set as second arg - ok to provide non-standard port too)
-//getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
-getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
+getServiceInstance("google.com", config.SMTP_PORT, "127.0.0.1:8600");
+
+// getServiceInstance(
+//   "shipments.service.consul",
+//   config.SMTP_PORT,
+//   "127.0.0.1:8600"
+// );
+// getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
 export { getServiceInstance };
 
 /* 
