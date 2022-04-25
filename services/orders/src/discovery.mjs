@@ -3,11 +3,10 @@ import { config } from "./config.mjs";
 import { verbose } from "./logging.mjs";
 import net from "node:net";
 /**
- *
+ * Discover a service instance
  * @param {*} host - i.e. smtp.service.consul or google.com
  * @param {*} dnsServer - optional - IP or IP:PORT
- * @returns
- *   rejected promise w/ ENOTFOUND if resolver fails
+ * @returns promise<ServiceInstance>
  */
 async function getServiceInstance(host, defaultPort, dnsServer) {
   verbose("resolver::host", host);
@@ -15,7 +14,7 @@ async function getServiceInstance(host, defaultPort, dnsServer) {
   // FIRST - if host is an IP => no lookups to perform
   if (net.isIP(host)) {
     var instance = { address: host, port: defaultPort };
-    verbose("resolver::isIP", instance);
+    verbose("resolver::IP::instance", instance);
     return Promise.resolve(instance);
   }
 
@@ -35,7 +34,7 @@ async function getServiceInstance(host, defaultPort, dnsServer) {
 
     // IMPORTANT - must resolve host returned in SRV record, each instance can have a differnet port
     const instanceAddresses = await r.resolve(instanceHost);
-    verbose("resolver::instanceAddresses", instanceAddresses);
+    verbose("resolver::SRV::instanceAddresses", instanceAddresses);
     instance.address = instanceAddresses[0];
     verbose("resolver::SRV::instance", instance);
     return Promise.resolve(instance);
@@ -47,7 +46,7 @@ async function getServiceInstance(host, defaultPort, dnsServer) {
     // given consul randomizes results we can just take the first one and get a degree of "load balancing"
     const firstRecord = records[0];
     const instance = { address: firstRecord, port: defaultPort };
-    verbose("resolver::result", instance);
+    verbose("resolver::hostonly::instance", instance);
     return instance;
   });
 }
