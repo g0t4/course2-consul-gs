@@ -2,6 +2,7 @@ import { Resolver } from "dns/promises";
 import nodemailer from "nodemailer";
 import { config } from "./config.mjs";
 import { verbose } from "./logging.mjs";
+import { getServiceInstance } from "./discovery.mjs";
 
 async function resolveInstance(host) {
   const resolver = new Resolver();
@@ -17,7 +18,7 @@ async function resolveInstance(host) {
 
 function sendOrderedEmail() {
   // TLDR: resolving directly to bypass issue in nodemailer ( see below )
-  return resolveInstance(config.SMTP_HOST).then((instance) => {
+  return getServiceInstance(config.SMTP_HOST).then((instance) => {
     const transporter = nodemailer.createTransport({
       pool: false,
       host: instance.address,
