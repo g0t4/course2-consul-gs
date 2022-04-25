@@ -2,14 +2,14 @@ import { Resolver } from "dns/promises";
 import nodemailer from "nodemailer";
 import { config } from "./config.mjs";
 
-function resolve(host) {
+function resolveInstance(host) {
   const resolver = new Resolver();
   return resolver.resolve(host);
 }
 
 function sendOrderedEmail() {
   // TLDR: resolving directly to bypass issue in nodemailer ( see below )
-  return resolve(config.SMTP_HOST).then((records) => {
+  return resolveInstance(config.SMTP_HOST).then((records) => {
     const firstRecord = records[0];
     // tested: no records => promise is rejected (pre-condition - always array w/ 1+ records)
     // tested: single record is also wrapped in array (as per docs)
