@@ -59,14 +59,13 @@ async function getServiceInstance(host, defaultPort, dnsServer) {
 //   LOG_LEVEL=verbose node orders/src/discovery.mjs
 // getServiceInstance("google.com", config.SMTP_PORT);
 // these two examples need consul DNS setup (set as second arg - ok to provide non-standard port too)
-getServiceInstance("google.com", config.SMTP_PORT, "127.0.0.1:8600");
 
 // getServiceInstance(
 //   "shipments.service.consul",
 //   config.SMTP_PORT,
 //   "127.0.0.1:8600"
 // );
-// getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
+//getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
 export { getServiceInstance };
 
 /* 
