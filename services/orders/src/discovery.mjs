@@ -10,16 +10,18 @@ import net from "node:net";
  *   rejected promise w/ ENOTFOUND if resolver fails
  */
 function getServiceInstance(host, defaultPort, dnsServer) {
+  verbose("resolver::host", host);
   if (net.isIP(host)) {
     // if host is an IP then there are no lookups to perform
-    return Promise.resolve({ address: host, port: defaultPort });
+    var instance = { address: host, port: defaultPort };
+    verbose("resolver::isIP", instance);
+    return Promise.resolve(instance);
   }
   const r = new Resolver();
   if (dnsServer && dnsServer !== "") {
     r.setServers([dnsServer]);
   }
   verbose("resolver::getServers", r.getServers());
-  verbose("resolver::host", host);
   return r.resolve(host).then((records) => {
     verbose("resolver::records", records);
     // given consul randomizes results we can just take the first one and get a degree of "load balancing"
