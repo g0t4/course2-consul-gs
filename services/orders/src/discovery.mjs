@@ -9,19 +9,38 @@ import net from "node:net";
  * @returns
  *   rejected promise w/ ENOTFOUND if resolver fails
  */
-function getServiceInstance(host, defaultPort, dnsServer) {
+async function getServiceInstance(host, defaultPort, dnsServer) {
   verbose("resolver::host", host);
+
+  // if host is an IP then there are no lookups to perform
   if (net.isIP(host)) {
-    // if host is an IP then there are no lookups to perform
     var instance = { address: host, port: defaultPort };
     verbose("resolver::isIP", instance);
     return Promise.resolve(instance);
   }
+
   const r = new Resolver();
   if (dnsServer && dnsServer !== "") {
     r.setServers([dnsServer]);
   }
   verbose("resolver::getServers", r.getServers());
+
+  // first, check for SRV record
+  const SRV_records = await r.resolveSrv(host);
+  if (SRV_records.length) {
+    const firstRecord = SRV_records[0];
+    const instancePort = firstRecord.port;
+    const instanceHost = firstRecord.name;
+
+    // IMPORTANT - must resolve host returned in SRV record, each instance can have a differnet port
+    const instanceAddresses = await r.resolve(instanceHost);
+    console.log(`resolve('${instanceHost})`, instanceAddresses);
+    const instanceAddress = instanceAddresses[0];
+    console.log(
+      `SRV leads to instance port ${instancePort} @ ${instanceAddress}`
+    );
+  }
+
   return r.resolve(host).then((records) => {
     verbose("resolver::records", records);
     // given consul randomizes results we can just take the first one and get a degree of "load balancing"
@@ -39,23 +58,6 @@ function getServiceInstance(host, defaultPort, dnsServer) {
 //getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
 getServiceInstance("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
 export { getServiceInstance };
-
-// const SRV_records = await r.resolveSrv(host);
-// console.log(`resolveSrv('${host}')`, SRV_records);
-// if (SRV_records.length) {
-//   // yes I can combine both SRV and A/AAAA lookups, but this is fine for my demo:
-//   const firstRecord = SRV_records[0];
-//   const instancePort = firstRecord.port;
-//   const instanceHost = firstRecord.name;
-
-//   // important to resolve host returned in SRV record b/c each service instance is tied to a port and IP and the port can vary too so can't just use resolve on smtp.service.consul, have to resolve host returned with SRV record
-//   const instanceAddresses = await r.resolve(instanceHost);
-//   console.log(`resolve('${instanceHost})`, instanceAddresses);
-//   const instanceAddress = instanceAddresses[0];
-//   console.log(
-//     `SRV leads to instance port ${instancePort} @ ${instanceAddress}`
-//   );
-// }
 
 /* 
 
