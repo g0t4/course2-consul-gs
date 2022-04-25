@@ -3,6 +3,10 @@ services {
   name    = "smtp"
   address = "10.0.1.61"
   port    = 1025
+  check {
+    tcp = "10.0.1.61:1025"
+    interval = "20s"
+  }
 }
 
 services {
