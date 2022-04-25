@@ -12,7 +12,7 @@ import net from "node:net";
 async function getServiceInstance(host, defaultPort, dnsServer) {
   verbose("resolver::host", host);
 
-  // if host is an IP then there are no lookups to perform
+  // FIRST - if host is an IP => no lookups to perform
   if (net.isIP(host)) {
     var instance = { address: host, port: defaultPort };
     verbose("resolver::isIP", instance);
@@ -25,22 +25,23 @@ async function getServiceInstance(host, defaultPort, dnsServer) {
   }
   verbose("resolver::getServers", r.getServers());
 
-  // first, check for SRV record
+  // SECOND, check for an SRV record (port + address)
   const SRV_records = await r.resolveSrv(host);
+  verbose("resolver::SRV_records", SRV_records);
   if (SRV_records.length) {
     const firstRecord = SRV_records[0];
-    const instancePort = firstRecord.port;
+    const instance = { port: firstRecord.port };
     const instanceHost = firstRecord.name;
 
     // IMPORTANT - must resolve host returned in SRV record, each instance can have a differnet port
     const instanceAddresses = await r.resolve(instanceHost);
-    console.log(`resolve('${instanceHost})`, instanceAddresses);
-    const instanceAddress = instanceAddresses[0];
-    console.log(
-      `SRV leads to instance port ${instancePort} @ ${instanceAddress}`
-    );
+    verbose("resolver::instanceAddresses", instanceAddresses);
+    instance.address = instanceAddresses[0];
+    verbose("resolver::SRV::instance", instance);
+    return Promise.resolve(instance);
   }
 
+  // LAST - resolve host + default port
   return r.resolve(host).then((records) => {
     verbose("resolver::records", records);
     // given consul randomizes results we can just take the first one and get a degree of "load balancing"
