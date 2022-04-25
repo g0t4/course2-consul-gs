@@ -1,10 +1,21 @@
 import { Resolver } from "node:dns/promises";
 import { config } from "./config.mjs";
 import { verbose } from "./logging.mjs";
-
-function resolve(host, dnsServer) {
+import net from "node:net";
+/**
+ *
+ * @param {*} host - i.e. smtp.service.consul or google.com
+ * @param {*} dnsServer - optional - IP or IP:PORT
+ * @returns
+ *   rejected promise w/ ENOTFOUND if resolver fails
+ */
+function resolve(host, defaultPort, dnsServer) {
+  if (net.isIP(host)) {
+    // if host is an IP address then there are no lookups to perform
+    // - also use configuration's SMTP_PORT
+    return Promise.resolve({ address: host, port: defaultPort });
+  }
   const r = new Resolver();
-  // if provided, set DNS server
   if (dnsServer && dnsServer !== "") {
     r.setServers([dnsServer]);
   }
@@ -12,20 +23,20 @@ function resolve(host, dnsServer) {
   verbose("resolver::host", host);
   return r.resolve(host).then((records) => {
     verbose("resolver::records", records);
-    // given consul randomizes results we can just take the first one and get a degree of load balancing
+    // given consul randomizes results we can just take the first one and get a degree of "load balancing"
     const firstRecord = records[0];
-    const result = { address: firstRecord, port: config.SMTP_PORT };
-    verbose("resolver::result", result);
-    return result; // only use first record
+    const instance = { address: firstRecord, port: defaultPort };
+    verbose("resolver::result", instance);
+    return instance;
   });
 }
 
 // test directly with:
 //   LOG_LEVEL=verbose node orders/src/resolver.mjs
-// resolve("google.com");
+// resolve("google.com", config.SMTP_PORT);
 // these two examples need consul DNS setup (set as second arg - ok to provide non-standard port too)
-//resolve("smtp.service.consul", "127.0.0.1:8600");
-resolve("smtp.service.consul", "127.0.0.1:8600");
+//resolve("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
+resolve("smtp.service.consul", config.SMTP_PORT, "127.0.0.1:8600");
 export { resolve };
 
 // const SRV_records = await r.resolveSrv(host);
