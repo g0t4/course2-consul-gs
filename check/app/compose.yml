@@ -39,7 +39,8 @@ services:
       LOG_LEVEL: verbose
       SHIPMENTS_URL: http://shipments.service.consul:5000
       SMTP_HOST: smtp.service.consul
-      SMTP_PORT: 25 # show SRV lookup discovers port too
+      SMTP_PORT: 2025
+        # show SRV lookup discovers port too (bogus port here)
 
   ## mail instances
   mail1:
