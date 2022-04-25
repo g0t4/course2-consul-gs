@@ -56,7 +56,7 @@ services:
       - "8026:8025"
     environment:
       # https://github.com/mailhog/MailHog/blob/master/docs/CONFIG.md
-      MH_SMTP_BIND_ADDR: 0.0.0.0:25 # smtp on 3025 (not default 1025)
+      MH_SMTP_BIND_ADDR: 0.0.0.0:25 # not default 1025
     networks:
       default:
         ipv4_address: 10.0.1.62
