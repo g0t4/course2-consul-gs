@@ -10,12 +10,12 @@ services {
   name    = "shipments"
   address = "10.0.1.32"
   port    = 5000
-  check {
+  checks {
     name     = "ship2 tcp check"
     tcp      = "10.0.1.32:5000"
     interval = "10s"
   }
-  check {
+  checks {
     name     = "ship2 http check"
     http     = "http://10.0.1.32:5000/"
     interval = "10s"
