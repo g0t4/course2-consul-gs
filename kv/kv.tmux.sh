@@ -40,6 +40,7 @@ tmux set-option pane-border-status top # pane title bars
 tmux set-option pane-border-format "#{pane_title}"
 tmux set-option mouse on
 tmux bind-key -n C-k "clear-history; refresh-client" # refresh-client fix for hitting Cmd+K
+
 # NOTE: zoom out a bit for this layout to work well (designed for ~32ish lines)
 tmux split-window -p 33 -t 0 -v # split out bottom [10 lines]
 tmux split-window -p 50 -t 0 -v # split out middle [10 lines]
