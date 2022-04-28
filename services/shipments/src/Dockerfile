@@ -2,6 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0.100-preview.2 AS build-env
 
 WORKDIR /src
 
+# download envconsul and extract into /tmp # will be copied into final run-env image
 RUN apt-get update && apt-get install -y unzip
 RUN curl -fsSL https://releases.hashicorp.com/envconsul/0.12.1/envconsul_0.12.1_linux_amd64.zip \
   --output /tmp/envconsul.zip \
@@ -23,6 +24,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0.0-preview.2 AS run-env
 WORKDIR /app
 EXPOSE 5000
 
+# add envconsul to path
 COPY --from=build-env /tmp/envconsul/envconsul /usr/bin/envconsul
 
 # helpers
