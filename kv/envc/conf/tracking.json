@@ -1,0 +1,8 @@
+{
+  "service": {
+    "id": "tracking-1",
+    "name": "tracking",
+    "address": "10.0.1.71",
+    "port": 8080
+  }
+}

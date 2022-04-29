@@ -1,0 +1,42 @@
+services:
+  consul-dev:
+    image: consul
+    ports:
+      - "8500:8500"
+    volumes:
+      - ./conf:/consul/config
+    networks:
+      default:
+        ipv4_address: 10.0.1.20
+  envc-shipments:
+    image: weshigbee/consul2-shipments
+    ports:
+      - "5000:5000"
+    entrypoint:
+      [
+        "envconsul",
+        "-consul-addr=10.0.1.20:8500",
+        "-prefix=shipments/",
+        "-log-level=debug",
+        "-upcase",
+        "dotnet /app/shipments.dll"
+      ]
+    dns:
+      - 10.0.1.20
+    networks:
+      default:
+        ipv4_address: 10.0.1.31
+  tracking:
+    image: weshigbee/consul2-tracking
+    ports:
+      - "8080:8080"
+    networks:
+      default:
+        ipv4_address: 10.0.1.71
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: "10.0.0.0/16"
+          gateway: "10.0.0.1"
