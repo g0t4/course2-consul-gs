@@ -5,3 +5,5 @@ ports {
 client_addr = "0.0.0.0"
 
 recursors = ["1.1.1.1"]
+
+auto_reload_config = true
