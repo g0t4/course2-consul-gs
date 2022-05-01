@@ -32,6 +32,9 @@ consul force-leave -prune cmt
 
 ```
 
+- round trip time between nodes: 
+  - http://localhost:8500/ui/mydc/nodes/co/round-trip-time
+
 ## curl services
 
 ```bash

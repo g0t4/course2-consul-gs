@@ -16,3 +16,5 @@ ui_config {
 
 data_dir = "/consul/data"
 
+# enable consul exec:
+disable_remote_exec = false # defaults to true 
