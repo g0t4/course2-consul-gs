@@ -1,3 +1,25 @@
+## membership
+
+```bash
+
+# watch services
+consul watch -type services jq
+#
+# split pane
+#
+# then, graceful leave
+docker compose exec cmt consul leave
+#   observe services watch (above)
+# notice status of cmt after:
+docker compose ps cmt
+# restart cmt
+docker compose up cmt -d 
+#   observe services watch (smtp and tracking come back)
+
+```
+
+## curl services
+
 ```bash
 
 # service requests (w/o published ports)
