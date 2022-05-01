@@ -1,7 +1,7 @@
 datacenter = "mydc"
 server     = false
 
-retry_join = ["10.0.1.20"]
+# retry_join = ["10.0.1.20"]
 
 bind_addr = "{{ GetPrivateInterfaces | include \"network\" \"10.0.0.0/16\" | attr \"address\" }}"
 

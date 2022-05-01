@@ -1,6 +1,15 @@
 ## membership
 
 ```bash
+# manual join
+# 2 panes - observes:
+  watch -t -n 1 'consul members && date'
+  docker compose logs cmt --follow # watch its logs specifically
+# one off check:
+docker compose exec cmt consul members # alone!
+# then, join cmt (not setup w/ retry join)
+docker compose exec cmt consul join 10.0.1.20
+
 
 # watch services
 consul watch -type services jq
@@ -18,7 +27,8 @@ docker compose up cmt -d
 #   observe services watch (smtp and tracking come back)
 
 # force-leave # to cleanup lost agents 
-consul force-leave AGENT_NAME
+consul force-leave cmt
+consul force-leave -prune cmt
 
 ```
 
