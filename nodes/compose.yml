@@ -35,6 +35,15 @@ services:
   ship:
     image: weshigbee/consul2-shipments
     network_mode: "service:cs"
+    entrypoint:
+      [
+        "envconsul",
+        "-consul-addr=10.0.1.20:8500",
+        "-prefix=shipments/",
+        "-log-level=debug",
+        "-upcase",
+        "dotnet /app/shipments.dll"
+      ]
 
   co:
     image: consul
