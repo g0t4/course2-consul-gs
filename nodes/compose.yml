@@ -1,0 +1,81 @@
+services:
+
+  server2:
+    &server
+    image: consul
+    hostname: server2
+    volumes:
+      - ./conf/server.hcl:/consul/config/server.hcl
+    command: [ "agent" ]
+    # override, don't pass -dev mode
+
+  server3:
+    <<: *server
+    hostname: server3
+
+  server1:
+    <<: *server
+    hostname: server1
+    ports:
+      - "8500:8500"
+    networks:
+      default:
+        ipv4_address: 10.0.1.20
+
+  cs:
+    image: consul
+    hostname: cs
+    volumes:
+      - ./conf/client.hcl:/consul/config/client.hcl
+      - ./conf/cs/shipments.hcl:/consul/config/shipments.hcl
+    command: [ "agent" ]
+    # override, don't pass -dev mode
+    dns:
+      - 127.0.0.1
+  ship:
+    image: weshigbee/consul2-shipments
+    network_mode: "service:cs"
+
+  co:
+    image: consul
+    hostname: co
+    volumes:
+      - ./conf/client.hcl:/consul/config/client.hcl
+      - ./conf/co/orders.hcl:/consul/config/orders.hcl
+    command: [ "agent" ]
+    ports:
+      - "3000:3000"
+    dns:
+      - 127.0.0.1
+  orders:
+    image: weshigbee/consul2-orders
+    network_mode: "service:co"
+    environment:
+      LOG_LEVEL: verbose
+      SHIPMENTS_URL: http://shipments.service.consul:5000
+      SMTP_HOST: smtp.service.consul
+      SMTP_PORT: 2025 # show SRV lookup discovers port too (bogus port here)
+
+  cmt:
+    image: consul
+    hostname: cmt
+    volumes:
+      - ./conf/client.hcl:/consul/config/client.hcl
+      - ./conf/cmt/smtp.hcl:/consul/config/smtp.hcl
+      - ./conf/cmt/tracking.hcl:/consul/config/tracking.hcl
+    command: [ "agent" ]
+    ports:
+      - "8025:8025"
+  mail:
+    image: mailhog/mailhog
+    network_mode: "service:cmt"
+  tracking:
+    image: weshigbee/consul2-tracking
+    network_mode: "service:cmt"
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: "10.0.0.0/16"
+          gateway: "10.0.0.1"
