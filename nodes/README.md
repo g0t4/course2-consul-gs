@@ -34,7 +34,9 @@ consul force-leave -prune cmt
 
 - round trip time between nodes: 
   - http://localhost:8500/ui/mydc/nodes/co/round-trip-time
-
+- leave on behaviors:
+  - https://www.consul.io/docs/agent/config/config-files#leave_on_terminate
+  - https://www.consul.io/docs/agent/config/config-files#skip_leave_on_interrupt
 ## curl services
 
 ```bash
