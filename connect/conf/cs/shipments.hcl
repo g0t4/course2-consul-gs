@@ -10,7 +10,16 @@ services {
 
   connect {
     # use defaults:
-    sidecar_service {}
+    sidecar_service {
+      proxy {
+        upstreams = [
+          {
+            destination_name = "tracking"
+            local_bind_port  = 7000
+          }
+        ]
+      }
+    }
   }
 
 }

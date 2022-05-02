@@ -91,12 +91,24 @@ services:
     command: [ "agent" ]
     ports:
       - "8025:8025"
+      - "19002:19002"
   mail:
     image: mailhog/mailhog
     network_mode: "service:cmt"
   tracking:
     image: weshigbee/consul2-tracking
     network_mode: "service:cmt"
+  tracking-sc:
+    image: weshigbee/consul2-envoy
+    network_mode: "service:cmt"
+    command:
+      [
+        "consul",
+        "connect",
+        "envoy",
+        "-sidecar-for=tracking1",
+        "-admin-bind=0.0.0.0:19002"
+      ]
 
 networks:
   default:
