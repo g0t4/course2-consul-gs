@@ -1,7 +1,7 @@
 datacenter = "mydc"
 
-server           = true
-bootstrap_expect = 3
+server    = true
+bootstrap = true
 
 retry_join = ["10.0.1.20"]
 
