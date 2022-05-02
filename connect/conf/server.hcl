@@ -14,3 +14,7 @@ ui_config {
 }
 
 data_dir = "/consul/data"
+
+connect {
+  enabled = true
+}

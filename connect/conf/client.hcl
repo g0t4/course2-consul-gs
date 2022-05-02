@@ -11,7 +11,8 @@ bind_addr = "{{ GetPrivateInterfaces | include \"network\" \"10.0.0.0/16\" | att
 client_addr = "127.0.0.1"
 # local dns
 ports {
-  dns = 53
+  dns = 53,
+  grpc = 8502
 }
 recursors = ["1.1.1.1"]
 
