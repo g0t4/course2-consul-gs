@@ -29,7 +29,7 @@ COPY --from=build-env /tmp/envconsul/envconsul /usr/bin/envconsul
 
 # helpers
 RUN apt-get update \
-  && apt-get install -y curl dnsutils iputils-ping tree command-not-found iproute2 procps psmisc net-tools lshw tcpdump \
+  && apt-get install -y curl dnsutils iputils-ping tree command-not-found iproute2 procps psmisc net-tools lshw tcpdump tcpflow \
   && rm -rf /var/lib/apt/lists/*
 
 # copy build artifacts into lean, runtime image
