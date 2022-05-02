@@ -3,6 +3,7 @@ server     = false
 
 retry_join = ["10.0.1.20"]
 
+# careful with bind/advertise addr - influences local service registrations
 bind_addr = "{{ GetPrivateInterfaces | include \"network\" \"10.0.0.0/16\" | attr \"address\" }}"
 
 
