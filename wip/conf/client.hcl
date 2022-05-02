@@ -2,7 +2,7 @@
 datacenter = "mydc"
 server     = false
 
-# retry_join = ["10.0.1.20"]
+retry_join = ["10.0.1.20"]
 
 # https://www.consul.io/docs/agent/config/config-files#bind_addr
 bind_addr = "{{ GetPrivateInterfaces | include \"network\" \"10.0.0.0/16\" | attr \"address\" }}"

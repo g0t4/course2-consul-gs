@@ -28,7 +28,7 @@ services:
     volumes:
       - ./conf/client.hcl:/consul/config/client.hcl
       - ./conf/cs/shipments.hcl:/consul/config/shipments.hcl
-    command: [ "agent", "-retry-join", "10.0.1.20" ]
+    command: [ "agent" ]
     # override, don't pass -dev mode
     dns:
       - 127.0.0.1
@@ -51,7 +51,7 @@ services:
     volumes:
       - ./conf/client.hcl:/consul/config/client.hcl
       - ./conf/co/orders.hcl:/consul/config/orders.hcl
-    command: [ "agent", "-retry-join", "10.0.1.20" ]
+    command: [ "agent" ]
     ports:
       - "3000:3000"
     dns:
