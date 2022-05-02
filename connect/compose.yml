@@ -22,6 +22,8 @@ services:
     command: [ "agent" ]
     dns:
       - 127.0.0.1
+    ports:
+      - "19001:19001"
   ship:
     image: weshigbee/consul2-shipments
     network_mode: "service:cs"
