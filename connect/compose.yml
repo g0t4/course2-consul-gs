@@ -22,8 +22,6 @@ services:
     command: [ "agent" ]
     dns:
       - 127.0.0.1
-    ports:
-      - "19001:19001"
   ship:
     image: weshigbee/consul2-shipments
     network_mode: "service:cs"
@@ -36,17 +34,6 @@ services:
         "-upcase",
         "dotnet /app/shipments.dll"
       ]
-  ship-sc:
-    image: weshigbee/consul2-envoy
-    network_mode: "service:cs"
-    command:
-      [
-        "consul",
-        "connect",
-        "envoy",
-        "-sidecar-for=shipments1",
-        "-admin-bind=0.0.0.0:19001"
-      ]
 
   # pod co (shared netns)
   co:
@@ -58,7 +45,6 @@ services:
     command: [ "agent" ]
     ports:
       - "3000:3000"
-      - "19000:19000"
     dns:
       - 127.0.0.1
   orders:
@@ -68,17 +54,6 @@ services:
       LOG_LEVEL: verbose
       SHIPMENTS_URL: http://shipments.service.consul:5000 # http://localhost:6000
       SMTP_HOST: smtp.service.consul
-  orders-sc:
-    image: weshigbee/consul2-envoy
-    network_mode: "service:co"
-    command:
-      [
-        "consul",
-        "connect",
-        "envoy",
-        "-sidecar-for=orders1",
-        "-admin-bind=0.0.0.0:19000"
-      ]
 
   # 'pod cmt' (shared netns)
   cmt:
@@ -91,24 +66,12 @@ services:
     command: [ "agent" ]
     ports:
       - "8025:8025"
-      - "19002:19002"
   mail:
     image: mailhog/mailhog
     network_mode: "service:cmt"
   tracking:
     image: weshigbee/consul2-tracking
     network_mode: "service:cmt"
-  tracking-sc:
-    image: weshigbee/consul2-envoy
-    network_mode: "service:cmt"
-    command:
-      [
-        "consul",
-        "connect",
-        "envoy",
-        "-sidecar-for=tracking1",
-        "-admin-bind=0.0.0.0:19002"
-      ]
 
 networks:
   default:

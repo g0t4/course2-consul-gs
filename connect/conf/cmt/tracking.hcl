@@ -6,8 +6,4 @@ services {
     http     = "http://localhost:8080"
     interval = "10s"
   }
-
-  connect {
-    sidecar_service {}
-  }
 }
