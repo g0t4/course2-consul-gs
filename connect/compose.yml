@@ -64,7 +64,7 @@ services:
     network_mode: "service:co"
     environment:
       LOG_LEVEL: verbose
-      SHIPMENTS_URL: http://shipments.service.consul:5000
+      SHIPMENTS_URL: http://localhost:6000
       SMTP_HOST: smtp.service.consul
   orders-sc:
     image: weshigbee/consul2-envoy
