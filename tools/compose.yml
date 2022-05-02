@@ -5,3 +5,6 @@ services:
   swiss:
     image: weshigbee/consul2-swiss
     build: ./swiss/
+  consul-envoy:
+    image: weshigbee/consul2-envoy
+    build: ./consul-envoy/
