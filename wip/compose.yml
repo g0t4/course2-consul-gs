@@ -29,7 +29,6 @@ services:
       - ./conf/client.hcl:/consul/config/client.hcl
       - ./conf/cs/shipments.hcl:/consul/config/shipments.hcl
     command: [ "agent" ]
-    # override, don't pass -dev mode
     dns:
       - 127.0.0.1
   ship:
