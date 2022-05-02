@@ -27,6 +27,7 @@
 - service-intention config entries
   - https://www.consul.io/docs/connect/config-entries/service-intentions
   - legacy intention API vs service-intentions config entry
+  - [`service-intentions` fields](https://www.consul.io/docs/connect/config-entries/service-intentions#available-fields)
 
 ## commands / steps
 
