@@ -12,6 +12,22 @@ services:
       default:
         ipv4_address: 10.0.1.20
 
+  server2:
+    image: consul
+    hostname: server2
+    volumes:
+      - ./conf/server.hcl:/consul/config/server.hcl
+    command: [ "agent" ]
+
+  server3:
+    image: consul
+    hostname: server3
+    volumes:
+      - ./conf/server.hcl:/consul/config/server.hcl
+    command: [ "agent" ]
+
+
+
 networks:
   default:
     ipam:
