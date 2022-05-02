@@ -6,4 +6,8 @@ services {
     http     = "http://localhost:5000/"
     interval = "10s"
   }
+  
+  connect {
+    sidecar_service {}
+  }
 }
