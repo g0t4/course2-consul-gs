@@ -1,7 +1,7 @@
 datacenter = "mydc"
 
 server           = true
-bootstrap_expect = 1
+bootstrap_expect = 3
 
 bind_addr = "{{ GetPrivateInterfaces | include \"network\" \"10.0.0.0/16\" | attr \"address\" }}"
 
