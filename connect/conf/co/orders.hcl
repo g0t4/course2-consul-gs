@@ -9,7 +9,14 @@ services {
 
   connect {
     sidecar_service {
-      
+      proxy {
+        upstreams = [
+          {
+            destination_name = "shipments"
+            local_bind_port  = 6000
+          }
+        ]
+      }
     }
   }
 }
