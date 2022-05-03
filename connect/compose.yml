@@ -20,6 +20,8 @@ services:
       - ./conf/client.hcl:/consul/config/client.hcl
       - ./conf/cs/shipments.hcl:/consul/config/shipments.hcl
     command: [ "agent" ]
+    ports:
+      - "19001:19001"
     dns:
       - 127.0.0.1
   ship:
@@ -56,6 +58,7 @@ services:
     command: [ "agent" ]
     ports:
       - "3000:3000"
+      - "19000:19000"
     dns:
       - 127.0.0.1
   orders:
@@ -65,7 +68,18 @@ services:
       LOG_LEVEL: verbose
       SHIPMENTS_URL: http://shipments.service.consul:5000 # http://localhost:6000
       SMTP_HOST: smtp.service.consul
-
+  orders-sc:
+    image: weshigbee/consul2-envoy
+    network_mode: "service:co"
+    command:
+      [
+        "consul",
+        "connect",
+        "envoy",
+        "-sidecar-for=orders1",
+        "-admin-bind=0.0.0.0:19000"
+      ]
+  
   # 'pod cmt' (shared netns)
   cmt:
     image: consul
