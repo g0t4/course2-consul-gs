@@ -10,7 +10,7 @@ services {
   connect {
     sidecar_service {
       proxy {
-        listeners = [
+        upstreams = [
           {
             destination_name = "tracking"
             local_bind_port = 7000
