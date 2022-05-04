@@ -8,6 +8,15 @@ services {
   }
   
   connect {
-    sidecar_service {}
+    sidecar_service {
+      proxy {
+        listeners = [
+          {
+            destination_name = "tracking"
+            local_bind_port = 7000
+          }
+        ]
+      }
+    }
   }
 }
