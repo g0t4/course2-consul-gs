@@ -38,7 +38,7 @@ docker container run --rm -it -p 3000:3000 --name orders \
 ## discovery via Consul DNS
 # consul-dev container 
 docker container run --rm -it --name consul-dev -p 8500:8500 \
-  hashicorp/consul:1.11.4 agent -dev -dns-port 53 -client 0.0.0.0
+  hashicorp/consul:1.12.0 agent -dev -dns-port 53 -client 0.0.0.0
 
 # orders service - discovery via consul's DNS
 docker container run --rm -it -p 3000:3000 --name orders \

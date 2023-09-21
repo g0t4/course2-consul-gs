@@ -2,7 +2,7 @@ services:
 
   server2:
     &server
-    image: hashicorp/consul:1.11.4
+    image: hashicorp/consul:1.12.0
     hostname: server2
     volumes:
       - ./conf/server.hcl:/consul/config/server.hcl
@@ -23,7 +23,7 @@ services:
         ipv4_address: 10.0.1.20
 
   cs:
-    image: hashicorp/consul:1.11.4
+    image: hashicorp/consul:1.12.0
     hostname: cs
     volumes:
       - ./conf/client.hcl:/consul/config/client.hcl
@@ -45,7 +45,7 @@ services:
       ]
 
   co:
-    image: hashicorp/consul:1.11.4
+    image: hashicorp/consul:1.12.0
     hostname: co
     volumes:
       - ./conf/client.hcl:/consul/config/client.hcl
@@ -65,7 +65,7 @@ services:
       SMTP_PORT: 2025 # show SRV lookup discovers port too (bogus port here)
 
   cmt:
-    image: hashicorp/consul:1.11.4
+    image: hashicorp/consul:1.12.0
     hostname: cmt
     volumes:
       - ./conf/client.hcl:/consul/config/client.hcl
