@@ -1,7 +1,7 @@
 services:
 
   server1:
-    image: consul
+    image: hashicorp/consul:1.12.0
     hostname: server1
     volumes:
       - ./conf/server.hcl:/consul/config/server.hcl
@@ -13,14 +13,14 @@ services:
         ipv4_address: 10.0.1.20
 
   server2:
-    image: consul
+    image: hashicorp/consul:1.12.0
     hostname: server2
     volumes:
       - ./conf/server.hcl:/consul/config/server.hcl
     command: [ "agent" ]
 
   server3:
-    image: consul
+    image: hashicorp/consul:1.12.0
     hostname: server3
     volumes:
       - ./conf/server.hcl:/consul/config/server.hcl
@@ -28,7 +28,7 @@ services:
 
   # think 'machine cs' or 'pod cs' (shared netns)
   cs:
-    image: consul
+    image: hashicorp/consul:1.12.0
     hostname: cs
     volumes:
       - ./conf/client.hcl:/consul/config/client.hcl
@@ -51,7 +51,7 @@ services:
 
   # pod co (shared netns)
   co:
-    image: consul
+    image: hashicorp/consul:1.12.0
     hostname: co
     volumes:
       - ./conf/client.hcl:/consul/config/client.hcl
@@ -71,7 +71,7 @@ services:
 
   # 'pod cmt' (shared netns)
   cmt:
-    image: consul
+    image: hashicorp/consul:1.12.0
     hostname: cmt
     volumes:
       - ./conf/client.hcl:/consul/config/client.hcl
