@@ -1,8 +1,8 @@
 services:
-  # docker container run --rm -it --name consul-dev -p 8500:8500 consul 
+  # docker container run --rm -it --name consul-dev -p 8500:8500 hashicorp/consul:1.11.4
   # agent -dev -dns-port 53 -client 0.0.0.0 -recursor 1.1.1.1
   consul-dev:
-    image: consul
+    image: hashicorp/consul:1.11.4
     ports:
       - "8500:8500"
     networks:
