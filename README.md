@@ -1,5 +1,12 @@
 # Getting Started with Consul - 2nd Edition
 
+## Course UPDATES!!!
+
+- For `v1.16+` use the new Docker Hub verified image: [`hashicorp/consul`](https://hub.docker.com/r/hashicorp/consul)
+  - The [`consul`](https://hub.docker.com/_/consul) official image that was used in the course is no longer receiving updates after `v1.15`
+  - FYI, the course demos were developed with `v1.12.0` and `v1.11.4`
+
+
 ## Links
 
 - [`consul.io` site](https://www.consul.io)
